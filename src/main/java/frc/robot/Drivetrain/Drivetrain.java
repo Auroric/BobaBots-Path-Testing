@@ -107,15 +107,18 @@ public class Drivetrain extends Subsystem {
         switch(shifter.get()){
             case kForward:
                 shifter.set(DoubleSolenoid.Value.kReverse);
+                System.out.println("Shifting to low gear!");
                 break;
             default:
                 shifter.set(DoubleSolenoid.Value.kForward);
+                System.out.println("Shifting to high gear!");
                 break;
         }
     }
 
     public static void shiftGear(DoubleSolenoid.Value shiftTo){
         shifter.set(shiftTo);
+        System.out.println("Shifting gears!");
     }
 
     public static void resetEncoders(){
