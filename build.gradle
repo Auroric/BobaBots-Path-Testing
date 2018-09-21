@@ -5,6 +5,12 @@ plugins {
 
 def ROBOT_CLASS = "frc.robot.Robot"
 
+// Task for running path generator .jar file
+task generateProfiles(type:Exec) {
+    workingDir 'profiles'
+    commandLine 'java', '-jar', '../generation/path-util-1.2.jar'
+}
+
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
@@ -22,6 +28,12 @@ deploy {
             targets << "roborio"
             // Debug can be overridden by command line, for use with VSCode
             debug = getDebugOrDefault(false)
+        }
+        fileCollectionArtifact('motionProfiles') {
+            dependsOn("generateProfiles")
+            targets << 'roborio'
+            files = fileTree(dir: 'profiles/generated', include: "**/*.csv")
+            directory = "/home/lvuser/profiles"
         }
     }
 }

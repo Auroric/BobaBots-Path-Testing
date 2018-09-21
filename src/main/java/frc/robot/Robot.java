@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-
+      new PathFollower("Straight15ft").start();
   }
 
   @Override

@@ -62,7 +62,8 @@ public class OI {
     }
 
     public double throttleValue() {
-        return xboxcontroller.getY(Hand.kLeft);
+        //Controllers y-axes are natively up-negative, down-positive
+        return -xboxcontroller.getY(Hand.kLeft);
     }
     public double turnValue() {
         return xboxcontroller.getX(Hand.kRight);

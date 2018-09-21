@@ -13,14 +13,18 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 public class PathFollower extends Command{
 
+    //Constant values for PIDVA correction
     private double kP = 0, kI = 0, kD = 0, kV = 1/2.872716583788768, kA = 0;
+    private double maxSpeed = 2, maxAccel = 2, maxJerk = 15; //These only apply to the Waypoint[] constructor
 
     Trajectory trajecLeft, trajecRight;
     EncoderFollower followerLeft, followerRight;
 
-    private static double kWheelDiameter = 0.1524;
+    //Robot measurements (in meters)
+    private static double kWheelDiameter = 0.1524; //6 in.
     private static double kWheelbase = 0.59817;
 
+    //Constructor for command that takes a String path name
     public PathFollower(String pathName){
 
         requires(Robot.drivetrain);
@@ -29,11 +33,12 @@ public class PathFollower extends Command{
         trajecRight = Pathfinder.readFromCSV(new File("/home/lvuser/profiles/" + pathName + "_right.csv"));
     }
 
+    //Constructor for command that takes a Waypoint array object
     public PathFollower(Waypoint[] points){
 
         requires(Robot.drivetrain);
 
-        Trajectory.Config pointsConfig = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_LOW, 0.02, 2, 2, 15);
+        Trajectory.Config pointsConfig = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_LOW, 0.02, maxSpeed, maxAccel, maxJerk);
         Trajectory pointsTrajec = Pathfinder.generate(points, pointsConfig);
 
         TankModifier modifier = new TankModifier(pointsTrajec);
@@ -43,18 +48,17 @@ public class PathFollower extends Command{
         trajecRight = modifier.getRightTrajectory();
     }
 
+    //This method runs only once when the Command is initialized
     protected void initialize(){
         //Resets current heading and encoder values to avoid errors
         Drivetrain.resetGyro();
         Drivetrain.resetEncoders();
 
-    }
-
-    protected void execute() {
-
+        //Creating EncoderFollower objects from Trajectory objects in constructors
         followerLeft = new EncoderFollower(trajecLeft);
         followerRight = new EncoderFollower(trajecRight);
 
+        //Sets encoders for error calculation
         followerLeft.configureEncoder(Drivetrain.leftMotorA.getSelectedSensorPosition(0),
                 4517, kWheelDiameter);
         followerRight.configureEncoder(Drivetrain.rightMotorA.getSelectedSensorPosition(0),
@@ -64,13 +68,17 @@ public class PathFollower extends Command{
         followerLeft.configurePIDVA(kP, kI, kD, kV, kA);
         followerRight.configurePIDVA(kP, kI, kD, kV, kA);
 
+    }
+
+    //execute() is called every 20 ms (RoboRIO default loop rate) 
+    protected void execute() {
+
         //Calculates left and right motor outputs based on a given encoder value 
         double left = followerLeft.calculate(Drivetrain.leftMotorA.getSelectedSensorPosition(0));
         double right = followerRight.calculate(Drivetrain.rightMotorA.getSelectedSensorPosition(0));
 
         //Gyro proportional correction
         double gyroHeading = -Drivetrain.gyro.getAngle(); //Inverts gyro to make it left hand positive like Pathfinder
-
         SmartDashboard.putNumber("Path Gyro Heading", gyroHeading);
         double desiredHeading = Pathfinder.r2d(followerRight.getHeading());
         double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading - gyroHeading);
@@ -89,8 +97,9 @@ public class PathFollower extends Command{
 
         SmartDashboard.putNumber("Path commanded left speed", leftspeed);
         SmartDashboard.putNumber("Path commanded right speed", rightspeed);
-        Drivetrain.drive(leftspeed, rightspeed);
+        Drivetrain.drive(leftspeed, rightspeed); //Drives at calculated speeds
     }
+
     /* Uses dimensional analysis to convert meters to encoder ticks
      *
      *          39.3701 in     1 revolution       4517 encoder ticks
@@ -102,6 +111,6 @@ public class PathFollower extends Command{
     }
 
     @Override
-    protected boolean isFinished() { return followerLeft.isFinished() && followerRight.isFinished(); }
+    protected boolean isFinished() { return followerLeft.isFinished() && followerRight.isFinished(); } //Command is finished when both followers are finished
 
 }
