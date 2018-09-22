@@ -14,8 +14,8 @@ import jaci.pathfinder.modifiers.TankModifier;
 public class PathFollower extends Command{
 
     //Constant values for PIDVA correction
-    private double kP = 0, kI = 0, kD = 0, kV = 1/2.872716583788768, kA = 0;
-    private double maxSpeed = 2, maxAccel = 2, maxJerk = 15; //These only apply to the Waypoint[] constructor
+    private double kP = 4.05, kI = 0, kD = 0, kV = 1/2.872716583788768, kA = 0;
+    private double maxSpeed = 2, maxAccel = 1, maxJerk = 15; //These only apply to the Waypoint[] constructor
 
     Trajectory trajecLeft, trajecRight;
     EncoderFollower followerLeft, followerRight;
@@ -26,6 +26,8 @@ public class PathFollower extends Command{
 
     //Constructor for command that takes a String path name
     public PathFollower(String pathName){
+
+        Drivetrain.resetEncoders();
 
         requires(Robot.drivetrain);
 
@@ -53,6 +55,7 @@ public class PathFollower extends Command{
         //Resets current heading and encoder values to avoid errors
         Drivetrain.resetGyro();
         Drivetrain.resetEncoders();
+        Drivetrain.setBrakeMode();
 
         //Creating EncoderFollower objects from Trajectory objects in constructors
         followerLeft = new EncoderFollower(trajecLeft);
@@ -93,6 +96,8 @@ public class PathFollower extends Command{
         if(!followerLeft.isFinished()){
             SmartDashboard.putNumber("Path left enc error", toTicks(followerLeft.getSegment().position)-Drivetrain.leftMotorA.getSelectedSensorPosition(0));
             SmartDashboard.putNumber("Path right enc error", toTicks(followerRight.getSegment().position)-Drivetrain.rightMotorA.getSelectedSensorPosition(0));
+            SmartDashboard.putNumber("Path left enc error num", toTicks(followerLeft.getSegment().position)-Drivetrain.leftMotorA.getSelectedSensorPosition(0));
+            SmartDashboard.putNumber("Path right enc error num", toTicks(followerRight.getSegment().position)-Drivetrain.rightMotorA.getSelectedSensorPosition(0));
         }
 
         SmartDashboard.putNumber("Path commanded left speed", leftspeed);

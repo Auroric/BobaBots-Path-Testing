@@ -19,6 +19,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    Drivetrain.resetEncoders();
+    Drivetrain.resetGyro();
     Scheduler.getInstance().removeAll();
   }
 
@@ -35,7 +37,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-      new PathFollower("Straight15ft").start();
+      new PathFollower("CtoRSwitch").start();
   }
 
   @Override

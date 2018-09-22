@@ -51,14 +51,14 @@ public class Drivetrain extends Subsystem {
         rightMotorB.follow(rightMotorA);
 
         //Drivetrain negation settings
-        Arrays.stream(leftMotors).forEach(motor -> motor.setInverted(false));
-        Arrays.stream(rightMotors).forEach(motor -> motor.setInverted(true));
+        Arrays.stream(leftMotors).forEach(motor -> motor.setInverted(true));
+        Arrays.stream(rightMotors).forEach(motor -> motor.setInverted(false));
 
         //Setting common settings for Talons
         for(TalonSRX motor : motors){
 
             //Current and voltage settings
-            motor.configPeakCurrentLimit(45, kTimeout);
+            motor.configPeakCurrentLimit(40, kTimeout);
             motor.configPeakCurrentDuration(500, kTimeout);
             motor.configContinuousCurrentLimit(35, kTimeout);
             motor.configVoltageCompSaturation(12, kTimeout);
@@ -78,17 +78,19 @@ public class Drivetrain extends Subsystem {
         //Left drivetrain encoder
         leftMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
         leftMotorA.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-        leftMotorA.setSensorPhase(true);
+        leftMotorA.setSensorPhase(false);
         
         //Right drivetrain encoder
         rightMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
         rightMotorA.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-        rightMotorA.setSensorPhase(true);
+        rightMotorA.setSensorPhase(false);
 
     }
 
     //Sets drivetrain sides to speed parameters
-    public static void drive(double leftspeed, double rightspeed) { 
+    public static void drive(double leftspeed, double rightspeed) {
+        
+        //System.out.println(leftspeed + ", " + rightspeed);
 
         leftMotorA.set(ControlMode.PercentOutput, leftspeed);
         rightMotorA.set(ControlMode.PercentOutput, rightspeed);
