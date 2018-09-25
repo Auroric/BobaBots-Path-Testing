@@ -8,8 +8,8 @@ public class Drive extends Command {
 
     private static final double kJoystickDeadband = 0.05;
 
-    public static final double kLinterceptHigh = 1.280;
-    public static final double kRinterceptHigh = 1.081;
+    public static final double kLinterceptHigh = 1.3677;
+    public static final double kRinterceptHigh = 1.3309;
     public static final double kLinterceptLow = 1.280;
     public static final double kRinterceptLow = 1.081;
 
