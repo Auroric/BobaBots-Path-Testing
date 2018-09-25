@@ -8,10 +8,21 @@ public class Drive extends Command {
 
     private static final double kJoystickDeadband = 0.05;
 
-    public static final double kLinterceptHigh = 1.3677;
+    /**
+     * Left: 21.51 ft/s, 6.559 m/s, equation: 582x-796, intercept at 1.3677v
+     * Right 20.51 ft/s, 6.253 m/s, equation: 553x-736, intercept at 1.3309v
+     * Average: 21.02 ft/s, 6.406 m/s
+     */
+    public static final double kLinterceptHigh = 1.3677; 
     public static final double kRinterceptHigh = 1.3309;
-    public static final double kLinterceptLow = 1.280;
-    public static final double kRinterceptLow = 1.081;
+
+    /**
+     * Left: 10.22 ft/s, 3.11 m/s, equation: 265x-242, intercept at 0.913v
+     * Right: 9.67 ft/s, 2.94 m/s, equation: 251x-231, intercept at 0.920v
+     * Average: 9.94ft/s, 3.025 m/s
+     */
+    public static final double kLinterceptLow = 0.913;
+    public static final double kRinterceptLow = 0.920;
 
     public Drive(){
         requires(Drivetrain.getInstance());
