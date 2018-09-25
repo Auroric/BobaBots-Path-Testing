@@ -35,25 +35,29 @@ public class Drive extends Command {
 
     protected void execute(){
         
+        //Getting the raw joystick values from OI
         double throttle = Robot.oi.throttleValue();
         double turn = Robot.oi.turnValue();
-
+        
+        //Deadbanding the joystick values to avoid moving when there is no input
         throttle = deadbandX(throttle, kJoystickDeadband);
         turn = deadbandX(turn, kJoystickDeadband);
-
-        if(throttle == 0){
+        
+        
+        if(throttle == 0){ //Quickturning when no input from throttle stick
             left = turn;
             right = -turn;
-        } else {
+        } else { //Binary curvature drive when throttle stick has input, squares outputs to add sensitivity curve
             left = throttle+throttle*turn;
             right = throttle-throttle*turn;
 
             left = exponentiate(left, 2);
             right = exponentiate(right, 2);
         }
-
+        
+        //Checks the current position of the shifters in order to determine which values to deadband the motor output to
         switch(Drivetrain.shifter.get()){
-            case kForward:
+            case kForward: 
                 left = deadbandY(left, kLinterceptHigh/12.0);
                 right = deadbandY(right, kRinterceptHigh/12.0);
                 break;
@@ -63,7 +67,8 @@ public class Drive extends Command {
             case kOff:
                 break;
         }
-
+        
+        //Drives the motors at calculated speeds
         Drivetrain.drive(left, right);
     }
 
