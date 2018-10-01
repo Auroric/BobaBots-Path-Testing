@@ -8,10 +8,21 @@ public class Drive extends Command {
 
     private static final double kJoystickDeadband = 0.05;
 
-    public static final double kLinterceptHigh = 1.280;
-    public static final double kRinterceptHigh = 1.081;
-    public static final double kLinterceptLow = 1.280;
-    public static final double kRinterceptLow = 1.081;
+    /**
+     * Left: 21.51 ft/s, 6.559 m/s, equation: 582x-796, intercept at 1.3677v
+     * Right 20.51 ft/s, 6.253 m/s, equation: 553x-736, intercept at 1.3309v
+     * Average: 21.02 ft/s, 6.406 m/s
+     */
+    public static final double kLinterceptHigh = 1.3677; 
+    public static final double kRinterceptHigh = 1.3309;
+
+    /**
+     * Left: 10.22 ft/s, 3.11 m/s, equation: 265x-242, intercept at 0.913v
+     * Right: 9.67 ft/s, 2.94 m/s, equation: 251x-231, intercept at 0.920v
+     * Average: 9.94ft/s, 3.025 m/s
+     */
+    public static final double kLinterceptLow = 0.913;
+    public static final double kRinterceptLow = 0.920;
 
     public Drive(){
         requires(Drivetrain.getInstance());
@@ -24,25 +35,29 @@ public class Drive extends Command {
 
     protected void execute(){
         
+        //Getting the raw joystick values from OI
         double throttle = Robot.oi.throttleValue();
         double turn = Robot.oi.turnValue();
-
+        
+        //Deadbanding the joystick values to avoid moving when there is no input
         throttle = deadbandX(throttle, kJoystickDeadband);
         turn = deadbandX(turn, kJoystickDeadband);
-
-        if(throttle == 0){
+        
+        
+        if(throttle == 0){ //Quickturning when no input from throttle stick
             left = turn;
             right = -turn;
-        } else {
+        } else { //Binary curvature drive when throttle stick has input, squares outputs to add sensitivity curve
             left = throttle+throttle*turn;
             right = throttle-throttle*turn;
 
             left = exponentiate(left, 2);
             right = exponentiate(right, 2);
         }
-
+        
+        //Checks the current position of the shifters in order to determine which values to deadband the motor output to
         switch(Drivetrain.shifter.get()){
-            case kForward:
+            case kForward: 
                 left = deadbandY(left, kLinterceptHigh/12.0);
                 right = deadbandY(right, kRinterceptHigh/12.0);
                 break;
@@ -52,7 +67,8 @@ public class Drive extends Command {
             case kOff:
                 break;
         }
-
+        
+        //Drives the motors at calculated speeds
         Drivetrain.drive(left, right);
     }
 
