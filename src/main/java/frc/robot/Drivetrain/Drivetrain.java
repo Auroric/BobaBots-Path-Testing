@@ -139,4 +139,8 @@ public class Drivetrain extends Subsystem {
     public static void setCoastMode(){
         Arrays.stream(motors).forEach(motor -> motor.setNeutralMode(NeutralMode.Coast));
     }
+
+    public static void stopCompressor(){
+        compressor.stop();
+    }
 }

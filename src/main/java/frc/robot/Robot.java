@@ -16,7 +16,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = Drivetrain.getInstance();
-    intake = Intake.getInstance();
+    //intake = Intake.getInstance();
     oi = new OI();
 
   }
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-      new PathFollower("CtoRSwitch").start();
+      new PathFollower("Straight15ft").start();
   }
 
   @Override
@@ -53,6 +53,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    Drivetrain.stopCompressor();
+  }
+
+  public void teleopInit(){
+    Drivetrain.setBrakeMode();
+
   }
 
   @Override
