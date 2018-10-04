@@ -11,9 +11,9 @@ public class IntakeVertical extends Command {
 
     protected void execute(){
         if(clampStatus){
-            Intake.raiseIntake();
+            IntakeSubsystem.raiseIntake();
         } else{
-            Intake.lowerIntake();
+            IntakeSubsystem.lowerIntake();
         }
     }
 

@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Intake extends Subsystem {
+public class IntakeSubsystem extends Subsystem {
 
-    private static Intake instance = null;
-    public static Intake getInstance(){
-        if (instance == null) instance = new Intake();
+    private static IntakeSubsystem instance = null;
+    public static IntakeSubsystem getInstance(){
+        if (instance == null) instance = new IntakeSubsystem();
         return instance;
     }
 
@@ -21,7 +21,7 @@ public class Intake extends Subsystem {
     private static DoubleSolenoid liftSolenoid = new DoubleSolenoid(0, 0, 0);
     private static DoubleSolenoid clampSolenoid = new DoubleSolenoid(0, 0, 0);
 
-    private Intake(){
+    private IntakeSubsystem(){
         intakeMotorA.configPeakCurrentLimit(40, kTimeout);
         intakeMotorA.configPeakCurrentDuration(500, kTimeout);
         intakeMotorA.configContinuousCurrentLimit(35, kTimeout);

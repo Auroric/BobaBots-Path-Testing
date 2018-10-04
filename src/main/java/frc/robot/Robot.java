@@ -4,19 +4,19 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Drivetrain.Drivetrain;
-import frc.robot.Intake.Intake;
+import frc.robot.Intake.IntakeSubsystem;
 import frc.robot.OI.OI;
 
 public class Robot extends TimedRobot {
 
   public static OI oi;
   public static Drivetrain drivetrain;
-  public static Intake intake;
+  public static IntakeSubsystem intake;
 
   @Override
   public void robotInit() {
     drivetrain = Drivetrain.getInstance();
-    //intake = Intake.getInstance();
+    intake = IntakeSubsystem.getInstance();
     oi = new OI();
 
   }
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-      new PathFollower("Straight15ft").start();
+      new PathFollower("CtoLSwitch").start();
   }
 
   @Override

@@ -14,7 +14,7 @@ public class IntakeSpin extends Command {
     }
 
     protected void execute(){
-        Intake.spinMotors(speed);
+        IntakeSubsystem.spinMotors(speed);
     }
 
     @Override

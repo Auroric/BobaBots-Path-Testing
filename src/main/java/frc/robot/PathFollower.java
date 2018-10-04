@@ -14,7 +14,7 @@ import jaci.pathfinder.modifiers.TankModifier;
 public class PathFollower extends Command{
 
     //Constant values for PIDVA correction
-    private double kP = 4.05, kI = 0, kD = 0, kV = 1/2.872716583788768, kA = 1;
+    private double kP = 10, kI = 0, kD = 0, kV = 1/2.872716583788768, kA = 0.145;
     private double maxSpeed = 2, maxAccel = 1, maxJerk = 15; //These only apply to the Waypoint[] constructor
 
     Trajectory trajecLeft, trajecRight;
