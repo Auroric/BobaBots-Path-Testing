@@ -84,6 +84,11 @@ public class Drivetrain extends Subsystem {
         rightMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
         rightMotorA.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
         rightMotorA.setSensorPhase(false);
+        
+        //Elevator Encoder
+        leftMotorB.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
+        leftMotorB.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        leftMotorB.setSensorPhase(false);
 
     }
 

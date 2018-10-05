@@ -1,11 +1,14 @@
-package frc.team253.robot.subsystems.elevator;
+package frc.robot.Elevator;
+
+import static frc.robot.Drivetrain.Drivetrain.leftMotorB;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Elevator.commands.elevate;
+import frc.robot.OI.ElevatorEncoderSource;
 
 public class ElevatorSubsystem extends Subsystem {
     
@@ -13,8 +16,8 @@ public class ElevatorSubsystem extends Subsystem {
     public static final int elevatorSparkB = 5;
     private static ElevatorSubsystem instance = null;
 
-    private final Spark ElevatorA = new Spark(ElevatorConstants.elevatorSparkA);
-    private final Spark ElevatorB = new Spark(ElevatorConstants.elevatorSparkB);
+    private final Spark ElevatorA = new Spark(elevatorSparkA);
+    private final Spark ElevatorB = new Spark(elevatorSparkB);
 
     private final SpeedControllerGroup ElevatorSparks = new SpeedControllerGroup(ElevatorA, ElevatorB);
     private ElevatorEncoderSource ElevatorEncoderSource = new ElevatorEncoderSource();

@@ -69,4 +69,7 @@ public class OI {
         return xboxcontroller.getX(Hand.kRight);
         
     }
+    public static double elevateValue(){ 
+        return 0;
+    }
 }

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Drivetrain.Drivetrain;
+import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSubsystem;
 import frc.robot.OI.OI;
 
@@ -12,11 +13,13 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static Drivetrain drivetrain;
   public static IntakeSubsystem intake;
+  public static ElevatorSubsystem elevator;
 
   @Override
   public void robotInit() {
     drivetrain = Drivetrain.getInstance();
     intake = IntakeSubsystem.getInstance();
+    elevator = ElevatorSubsystem.getInstance();
     oi = new OI();
 
   }
