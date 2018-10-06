@@ -1,35 +1,36 @@
 package frc.robot.Intake;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+//import frc.robot.Robot;
 
 public class IntakeSubsystem extends Subsystem {
 
     private static IntakeSubsystem instance = null;
+
     public static IntakeSubsystem getInstance(){
         if (instance == null) instance = new IntakeSubsystem();
         return instance;
     }
 
-    private static TalonSRX intakeMotorA = new TalonSRX(0);
-    private static final int kTimeout = 10;
+    private static VictorSP intakeMotorA = new VictorSP(1);
+    //private static final int kTimeout = 10;
 
-    private static DoubleSolenoid liftSolenoid = new DoubleSolenoid(0, 0, 0);
-    private static DoubleSolenoid clampSolenoid = new DoubleSolenoid(0, 0, 0);
+    //private static DoubleSolenoid liftSolenoid = new DoubleSolenoid(0, 0, 0);
+    private static DoubleSolenoid clampSolenoid = new DoubleSolenoid(1, 6, 7);
 
     private IntakeSubsystem(){
-        intakeMotorA.configPeakCurrentLimit(40, kTimeout);
+        /*intakeMotorA.configPeakCurrentLimit(40, kTimeout);
         intakeMotorA.configPeakCurrentDuration(500, kTimeout);
-        intakeMotorA.configContinuousCurrentLimit(35, kTimeout);
+        intakeMotorA.configContinuousCurrentLimit(35, kTimeout);*/
     }
 
     /* Manipulator intaking controls */
     public static void spinMotors(double speed){
-        intakeMotorA.set(ControlMode.PercentOutput, speed);
+        intakeMotorA.setSpeed(speed);
     }
 
     public static void switchIntakeClamp(){
@@ -49,7 +50,7 @@ public class IntakeSubsystem extends Subsystem {
     }
 
     /* Manipulator height controls */
-    public static void setIntakeHeight(DoubleSolenoid.Value position){
+    /*public static void setIntakeHeight(DoubleSolenoid.Value position){
         liftSolenoid.set(position);
     }
     
@@ -67,10 +68,10 @@ public class IntakeSubsystem extends Subsystem {
 
     public static void lowerIntake(){
         liftSolenoid.set(Value.kReverse);
-    }
+    }*/
 
     @Override
     protected void initDefaultCommand() {
-        
+        new IntakeSpin();
     }
 }

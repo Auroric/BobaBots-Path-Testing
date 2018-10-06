@@ -11,9 +11,11 @@ import static frc.robot.OI.XBPovButton.UP_LEFT;
 import static frc.robot.OI.XBPovButton.UP_RIGHT;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.Drivetrain.Drivetrain;
+import frc.robot.Intake.IntakeSpin;
 
 public class OI {
     public XboxController xboxcontroller;
@@ -25,6 +27,8 @@ public class OI {
     public JoystickButton ButtonLB;
     public JoystickButton ButtonRT;
     public JoystickButton ButtonLT;
+    public Joystick intakestick;
+    public static Joystick elevatorstick;
 
     public JoystickButton dpadUP;
     public JoystickButton dpadUP_RIGHT;
@@ -36,8 +40,14 @@ public class OI {
     public JoystickButton dpadUP_LEFT;
     public JoystickButton dpadNONE;
 
+    public JoystickButton Button1;
+    public JoystickButton Button2;
+
     public OI(){
         xboxcontroller = new XboxController(1);
+        intakestick = new Joystick(3);
+        elevatorstick = new Joystick(2);
+
         ButtonA = new JoystickButton(xboxcontroller, 1);
         ButtonB = new JoystickButton(xboxcontroller, 2);
         ButtonX = new JoystickButton(xboxcontroller, 3);
@@ -58,6 +68,20 @@ public class OI {
         dpadNONE = new XBPovButton(xboxcontroller, NONE);
 
         dpadLEFT.whenPressed(new RunCommand( () -> Drivetrain.shiftGear() ));
+        ButtonY.whileHeld(new IntakeSpin(-0.5));
+        ButtonY.whenReleased(new IntakeSpin(0));
+
+        ButtonX.whileHeld(new IntakeSpin(0.5));
+        ButtonX.whenReleased(new IntakeSpin(0));
+
+        Button1 = new JoystickButton(intakestick, 1);
+        Button2 = new JoystickButton(intakestick, 2);
+
+        Button1.whileHeld(new IntakeSpin(-0.5));
+        Button1.whenReleased(new IntakeSpin(0));
+
+        Button2.whileHeld(new IntakeSpin(0.5));
+        Button2.whenReleased(new IntakeSpin(0));
 
     }
 
@@ -70,6 +94,12 @@ public class OI {
         
     }
     public static double elevateValue(){ 
-        return 0;
+        return elevatorstick.getY();
+    }
+
+    public double intakeSpeed(){
+        System.out.println(intakestick.getY());
+        return intakestick.getY();
+ 
     }
 }

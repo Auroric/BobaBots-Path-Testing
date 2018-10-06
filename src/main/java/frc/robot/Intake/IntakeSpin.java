@@ -13,6 +13,10 @@ public class IntakeSpin extends Command {
         requires(Robot.intake);
     }
 
+    public IntakeSpin(){
+        requires(Robot.intake);
+    }
+
     protected void execute(){
         IntakeSubsystem.spinMotors(speed);
     }

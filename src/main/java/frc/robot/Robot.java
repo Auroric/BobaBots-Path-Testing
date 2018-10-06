@@ -1,8 +1,12 @@
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Drivetrain.AutoDriveTimed;
 import frc.robot.Drivetrain.Drivetrain;
 import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSubsystem;
@@ -15,12 +19,20 @@ public class Robot extends TimedRobot {
   public static IntakeSubsystem intake;
   public static ElevatorSubsystem elevator;
 
+  UsbCamera camera;
+  public String gameData;
+
   @Override
   public void robotInit() {
-    drivetrain = Drivetrain.getInstance();
     intake = IntakeSubsystem.getInstance();
     elevator = ElevatorSubsystem.getInstance();
+    drivetrain = Drivetrain.getInstance();
     oi = new OI();
+
+    camera = CameraServer.getInstance().startAutomaticCapture(0);
+
+    camera.setResolution(320, 240);
+    camera.setFPS(15);
 
   }
 
@@ -44,7 +56,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-      new PathFollower("CtoLSwitch").start();
+      //new AutoDriveTimed().start();
+
+      new PathFollower("Straight15ft").start();
+
+      gameData = DriverStation.getInstance().getGameSpecificMessage();
   }
 
   @Override
@@ -56,7 +72,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    Drivetrain.stopCompressor();
   }
 
   public void teleopInit(){
@@ -67,5 +82,10 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     Scheduler.getInstance().run();
+  }
+
+  public void disabledPeriodic(){
+    gameData = DriverStation.getInstance().getGameSpecificMessage();
+    SmartDashboard.putString("gameData", gameData);
   }
 }

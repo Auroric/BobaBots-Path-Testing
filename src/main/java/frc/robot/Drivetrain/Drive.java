@@ -5,6 +5,7 @@ import frc.robot.Robot;
 
 public class Drive extends Command {
     private static double right, left;
+    boolean autoEnabled = false;
 
     private static final double kJoystickDeadband = 0.05;
 
@@ -42,7 +43,6 @@ public class Drive extends Command {
         //Deadbanding the joystick values to avoid moving when there is no input
         throttle = deadbandX(throttle, kJoystickDeadband);
         turn = deadbandX(turn, kJoystickDeadband);
-        
         
         if(throttle == 0){ //Quickturning when no input from throttle stick
             left = turn;

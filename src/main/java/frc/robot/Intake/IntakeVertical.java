@@ -10,11 +10,11 @@ public class IntakeVertical extends Command {
     }
 
     protected void execute(){
-        if(clampStatus){
+        /*if(clampStatus){
             IntakeSubsystem.raiseIntake();
         } else{
             IntakeSubsystem.lowerIntake();
-        }
+        }*/
     }
 
     @Override
