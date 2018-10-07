@@ -94,8 +94,6 @@ public class Drivetrain extends Subsystem {
 
     //Sets drivetrain sides to speed parameters
     public static void drive(double leftspeed, double rightspeed) {
-        
-        System.out.println(leftspeed + ", " + rightspeed);
 
         leftMotorA.set(ControlMode.PercentOutput, leftspeed);
         rightMotorA.set(ControlMode.PercentOutput, rightspeed);

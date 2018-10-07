@@ -19,6 +19,8 @@ public class ElevatorSubsystem extends Subsystem {
     private final Spark ElevatorA = new Spark(elevatorSparkA);
     private final Spark ElevatorB = new Spark(elevatorSparkB);
 
+    public static boolean overrideLimit = false;
+
     private final SpeedControllerGroup ElevatorSparks = new SpeedControllerGroup(ElevatorA, ElevatorB);
     private ElevatorEncoderSource ElevatorEncoderSource = new ElevatorEncoderSource();
     public PIDController elevatorControl = new PIDController(0,0,0,0, ElevatorEncoderSource, ElevatorSparks);
@@ -34,6 +36,14 @@ public class ElevatorSubsystem extends Subsystem {
             instance = new ElevatorSubsystem();
 
         return instance;
+    }
+
+    public static void overrideLimit(){
+        if(overrideLimit){
+            overrideLimit = true;
+        } else {
+            overrideLimit = false;
+        }
     }
 
     public void elevate(double speed){

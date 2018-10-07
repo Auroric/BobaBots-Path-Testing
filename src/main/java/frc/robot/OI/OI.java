@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.Drivetrain.Drivetrain;
+import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSpin;
 
 public class OI {
@@ -68,21 +69,22 @@ public class OI {
         dpadNONE = new XBPovButton(xboxcontroller, NONE);
 
         dpadLEFT.whenPressed(new RunCommand( () -> Drivetrain.shiftGear() ));
-        ButtonY.whileHeld(new IntakeSpin(-0.5));
+        ButtonY.whileHeld(new IntakeSpin(-0.7));
         ButtonY.whenReleased(new IntakeSpin(0));
 
-        ButtonX.whileHeld(new IntakeSpin(0.5));
+        ButtonX.whileHeld(new IntakeSpin(0.7));
         ButtonX.whenReleased(new IntakeSpin(0));
 
         Button1 = new JoystickButton(intakestick, 1);
         Button2 = new JoystickButton(intakestick, 2);
 
-        Button1.whileHeld(new IntakeSpin(-0.5));
+        Button1.whileHeld(new IntakeSpin(-0.7));
         Button1.whenReleased(new IntakeSpin(0));
 
-        Button2.whileHeld(new IntakeSpin(0.5));
+        Button2.whileHeld(new IntakeSpin(0.7));
         Button2.whenReleased(new IntakeSpin(0));
-
+        
+        dpadRIGHT.whenPressed(new RunCommand( () -> ElevatorSubsystem.overrideLimit() ));
     }
 
     public double throttleValue() {
@@ -98,7 +100,6 @@ public class OI {
     }
 
     public double intakeSpeed(){
-        System.out.println(intakestick.getY());
         return intakestick.getY();
  
     }

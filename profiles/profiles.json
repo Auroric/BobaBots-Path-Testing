@@ -2,7 +2,7 @@
   "Straight15ft": {
     "points": [
       {"x": 0, "y": 0, "angle": 0},
-      {"x": 3.5, "y": 0, "angle": 0}
+      {"x": 4.572, "y": 0, "angle": 0}
     ],
     "flip": false
   },
@@ -31,6 +31,27 @@
     "points": [
       {"x": 0.466344, "y": 3.989832, "angle": 0},
       {"x": 3.515056, "y": 5.81688, "angle": 0}
+    ],
+    "flip": false
+  },
+  "CtoRBaseline": {
+    "points": [
+      {"x": 0.42, "y": 4, "angle": 0},
+      {"x": 4, "y": 1.1, "angle": 0}
+    ],
+    "flip": false
+  },
+  "CtoLBaseline": {
+    "points": [
+      {"x": 0.42, "y": 4, "angle": 0},
+      {"x": 4, "y": 7.3, "angle": 0}
+    ],
+    "flip": false
+  },
+  "LtoLSwitch": {
+    "points": [
+      {"x": 0.466344, "y": 7, "angle": 0},
+      {"x": 3.3, "y": 6.3, "angle": -40}
     ],
     "flip": false
   }

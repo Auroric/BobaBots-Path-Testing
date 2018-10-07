@@ -4,19 +4,21 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class AutoDriveTimed extends Command{
+    private double timeout;
+    private double speed = 0.4;
 
-    public AutoDriveTimed(){
+    public AutoDriveTimed(double timeout){
         requires(Robot.drivetrain);
-
+        this.timeout = timeout;
     }
 
     protected void initialize(){
-        setTimeout(4.5);
-
+        System.out.println("Running timed straight driving at " + speed*100 + " percent for " + timeout +" seconds!");
+        setTimeout(timeout);
     }
 
     protected void execute(){
-        Drivetrain.drive(0.4,0.4);
+        Drivetrain.drive(speed,speed);
     }
 
     protected void end(){

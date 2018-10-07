@@ -14,7 +14,7 @@ import jaci.pathfinder.modifiers.TankModifier;
 public class PathFollower extends Command{
 
     //Constant values for PIDVA correction
-    private double kP = 0, kI = 0, kD = 0, kV = 1/2.872716583788768, kA = 0.145;
+    private double kP = 4, kI = 0, kD = 0, kV = 1/2.872716583788768, kA = 0.145;
     private double maxSpeed = 2, maxAccel = 1, maxJerk = 15; //These only apply to the Waypoint[] constructor
 
     Trajectory trajecLeft, trajecRight;
@@ -90,14 +90,13 @@ public class PathFollower extends Command{
         double leftspeed = left+turn;
         double rightspeed = right-turn;
 
-        System.out.println();
         
         //Checks if the follower is finished before calling .getSegment() to avoid runtime errors
         if(!followerLeft.isFinished()){
             SmartDashboard.putNumber("Path left enc error", toTicks(followerLeft.getSegment().position)-Drivetrain.leftMotorA.getSelectedSensorPosition(0));
             SmartDashboard.putNumber("Path right enc error", toTicks(followerRight.getSegment().position)-Drivetrain.rightMotorA.getSelectedSensorPosition(0));
-            SmartDashboard.putNumber("Path left enc error num", toTicks(followerLeft.getSegment().position)-Drivetrain.leftMotorA.getSelectedSensorPosition(0));
-            SmartDashboard.putNumber("Path right enc error num", toTicks(followerRight.getSegment().position)-Drivetrain.rightMotorA.getSelectedSensorPosition(0));
+            SmartDashboard.putNumber("Left path encoder", Drivetrain.leftMotorA.getSelectedSensorPosition(0));
+            SmartDashboard.putNumber("Right path encoder", Drivetrain.rightMotorA.getSelectedSensorPosition(0)); 
         }
 
         SmartDashboard.putNumber("Path commanded left speed", leftspeed);
