@@ -1,10 +1,11 @@
-package frc.robot;
+package frc.robot.Autonomous;
 
 import java.io.File;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Drivetrain.Drivetrain;
+import frc.robot.Robot;
+import frc.robot.Drivetrain.DrivetrainSubsystem;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -27,7 +28,7 @@ public class PathFollower extends Command{
     //Constructor for command that takes a String path name
     public PathFollower(String pathName){
 
-        Drivetrain.resetEncoders();
+        DrivetrainSubsystem.resetEncoders();
 
         requires(Robot.drivetrain);
 
@@ -53,18 +54,18 @@ public class PathFollower extends Command{
     //This method runs only once when the Command is initialized
     protected void initialize(){
         //Resets current heading and encoder values to avoid errors
-        Drivetrain.resetGyro();
-        Drivetrain.resetEncoders();
-        Drivetrain.setBrakeMode();
+        DrivetrainSubsystem.resetGyro();
+        DrivetrainSubsystem.resetEncoders();
+        DrivetrainSubsystem.setBrakeMode();
 
         //Creating EncoderFollower objects from Trajectory objects in constructors
         followerLeft = new EncoderFollower(trajecLeft);
         followerRight = new EncoderFollower(trajecRight);
 
         //Sets encoders for error calculation
-        followerLeft.configureEncoder(Drivetrain.leftMotorA.getSelectedSensorPosition(0),
+        followerLeft.configureEncoder(DrivetrainSubsystem.leftMotorA.getSelectedSensorPosition(0),
                 4517, kWheelDiameter);
-        followerRight.configureEncoder(Drivetrain.rightMotorA.getSelectedSensorPosition(0),
+        followerRight.configureEncoder(DrivetrainSubsystem.rightMotorA.getSelectedSensorPosition(0),
                 4517, kWheelDiameter);
 
         //Configures PIDVA values 
@@ -77,11 +78,11 @@ public class PathFollower extends Command{
     protected void execute() {
 
         //Calculates left and right motor outputs based on a given encoder value 
-        double left = followerLeft.calculate(Drivetrain.leftMotorA.getSelectedSensorPosition(0));
-        double right = followerRight.calculate(Drivetrain.rightMotorA.getSelectedSensorPosition(0));
+        double left = followerLeft.calculate(DrivetrainSubsystem.leftMotorA.getSelectedSensorPosition(0));
+        double right = followerRight.calculate(DrivetrainSubsystem.rightMotorA.getSelectedSensorPosition(0));
 
         //Gyro proportional correction
-        double gyroHeading = -Drivetrain.gyro.getAngle(); //Inverts gyro to make it left hand positive like Pathfinder
+        double gyroHeading = -DrivetrainSubsystem.gyro.getAngle(); //Inverts gyro to make it left hand positive like Pathfinder
         SmartDashboard.putNumber("Path Gyro Heading", gyroHeading);
         double desiredHeading = Pathfinder.r2d(followerRight.getHeading());
         double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading - gyroHeading);
@@ -93,15 +94,15 @@ public class PathFollower extends Command{
         
         //Checks if the follower is finished before calling .getSegment() to avoid runtime errors
         if(!followerLeft.isFinished()){
-            SmartDashboard.putNumber("Path left enc error", toTicks(followerLeft.getSegment().position)-Drivetrain.leftMotorA.getSelectedSensorPosition(0));
-            SmartDashboard.putNumber("Path right enc error", toTicks(followerRight.getSegment().position)-Drivetrain.rightMotorA.getSelectedSensorPosition(0));
-            SmartDashboard.putNumber("Left path encoder", Drivetrain.leftMotorA.getSelectedSensorPosition(0));
-            SmartDashboard.putNumber("Right path encoder", Drivetrain.rightMotorA.getSelectedSensorPosition(0)); 
+            SmartDashboard.putNumber("Path left enc error", toTicks(followerLeft.getSegment().position)-DrivetrainSubsystem.leftMotorA.getSelectedSensorPosition(0));
+            SmartDashboard.putNumber("Path right enc error", toTicks(followerRight.getSegment().position)-DrivetrainSubsystem.rightMotorA.getSelectedSensorPosition(0));
+            SmartDashboard.putNumber("Left path encoder", DrivetrainSubsystem.leftMotorA.getSelectedSensorPosition(0));
+            SmartDashboard.putNumber("Right path encoder", DrivetrainSubsystem.rightMotorA.getSelectedSensorPosition(0)); 
         }
 
         SmartDashboard.putNumber("Path commanded left speed", leftspeed);
         SmartDashboard.putNumber("Path commanded right speed", rightspeed);
-        Drivetrain.drive(leftspeed, rightspeed); //Drives at calculated speeds
+        DrivetrainSubsystem.drive(leftspeed, rightspeed); //Drives at calculated speeds
     }
 
     /* Uses dimensional analysis to convert meters to encoder ticks

@@ -14,11 +14,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Drivetrain extends Subsystem {
+public class DrivetrainSubsystem extends Subsystem {
 
-    private static Drivetrain instance = null;
-    public static Drivetrain getInstance(){
-        if (instance == null) instance = new Drivetrain();
+    private static DrivetrainSubsystem instance = null;
+    public static DrivetrainSubsystem getInstance(){
+        if (instance == null) instance = new DrivetrainSubsystem();
         return instance;
     }
 
@@ -45,12 +45,12 @@ public class Drivetrain extends Subsystem {
         setDefaultCommand(new Drive());
     }
 
-    private Drivetrain() {
+    private DrivetrainSubsystem() {
         //Setting leader and follower talons
         leftMotorB.follow(leftMotorA);
         rightMotorB.follow(rightMotorA);
 
-        //Drivetrain negation settings
+        //DrivetrainSubsystem negation settings
         Arrays.stream(leftMotors).forEach(motor -> motor.setInverted(true));
         Arrays.stream(rightMotors).forEach(motor -> motor.setInverted(false));
 

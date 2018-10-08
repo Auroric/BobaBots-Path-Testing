@@ -1,7 +1,8 @@
-package frc.robot.Drivetrain;
+package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.Drivetrain.DrivetrainSubsystem;
 
 public class AutoDriveTimed extends Command{
     private double timeout;
@@ -18,11 +19,11 @@ public class AutoDriveTimed extends Command{
     }
 
     protected void execute(){
-        Drivetrain.drive(speed,speed);
+        DrivetrainSubsystem.drive(speed,speed);
     }
 
     protected void end(){
-        Drivetrain.drive(0,0);
+        DrivetrainSubsystem.drive(0,0);
     }
 
     protected boolean isFinished(){

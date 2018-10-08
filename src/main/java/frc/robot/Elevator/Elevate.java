@@ -1,17 +1,16 @@
-package frc.robot.Elevator.commands;
+package frc.robot.Elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.Drivetrain.Drivetrain;
-import frc.robot.Elevator.ElevatorSubsystem;
+import frc.robot.Drivetrain.DrivetrainSubsystem;
 import frc.robot.OI.OI;
 
-public class elevate extends Command {
+public class Elevate extends Command {
 
     private boolean overrideLimit = false;
 
-    public elevate(){
+    public Elevate(){
         requires(Robot.elevator);
     }
 
@@ -24,7 +23,7 @@ public class elevate extends Command {
         SmartDashboard.putNumber("Elevator Joystick Input",elevateAxis);
         SmartDashboard.putBoolean("Elevator PID Controller Active", Robot.elevator.elevatorControl.isEnabled());
 
-        SmartDashboard.putNumber("Elevator encoder", Drivetrain.leftMotorB.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Elevator encoder", DrivetrainSubsystem.leftMotorB.getSelectedSensorPosition(0));
 
 
 
@@ -35,7 +34,7 @@ public class elevate extends Command {
                 elevator.elevatorControl.disable();
             }*/
 
-            if(!overrideLimit && elevateAxis < 0 && Drivetrain.leftMotorB.getSelectedSensorPosition(0)-15000 > 0){
+            if(!overrideLimit && elevateAxis < 0 && DrivetrainSubsystem.leftMotorB.getSelectedSensorPosition(0)-15000 > 0){
                 elevateAxis = -0.2;
             }
             Robot.elevator.elevate(elevateAxis);

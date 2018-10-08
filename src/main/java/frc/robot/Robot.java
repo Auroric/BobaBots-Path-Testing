@@ -9,16 +9,16 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Drivetrain.Drivetrain;
+import frc.robot.Autonomous.AutonomousCommand;
+import frc.robot.Drivetrain.DrivetrainSubsystem;
 import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSubsystem;
-import frc.robot.OI.AutonomousCommand;
 import frc.robot.OI.OI;
 
 public class Robot extends TimedRobot {
 
   public static OI oi;
-  public static Drivetrain drivetrain;
+  public static DrivetrainSubsystem drivetrain;
   public static IntakeSubsystem intake;
   public static ElevatorSubsystem elevator;
 
@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     intake = IntakeSubsystem.getInstance();
     elevator = ElevatorSubsystem.getInstance();
-    drivetrain = Drivetrain.getInstance();
+    drivetrain = DrivetrainSubsystem.getInstance();
     oi = new OI();
     /*
     camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -58,21 +58,21 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    Drivetrain.resetEncoders();
-    Drivetrain.resetGyro();
+    DrivetrainSubsystem.resetEncoders();
+    DrivetrainSubsystem.resetGyro();
     Scheduler.getInstance().removeAll();
 
-    Drivetrain.leftMotorB.setSelectedSensorPosition(0, 0, 10);
+    DrivetrainSubsystem.leftMotorB.setSelectedSensorPosition(0, 0, 10);
   }
 
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Left Motor Output", Drivetrain.leftMotorA.getMotorOutputPercent());
-    SmartDashboard.putNumber("Right Motor Output", Drivetrain.rightMotorA.getMotorOutputPercent());
+    SmartDashboard.putNumber("Left Motor Output", DrivetrainSubsystem.leftMotorA.getMotorOutputPercent());
+    SmartDashboard.putNumber("Right Motor Output", DrivetrainSubsystem.rightMotorA.getMotorOutputPercent());
 
-    SmartDashboard.putNumber("Raw Gyro Heading", Drivetrain.gyro.getAngle());
-    SmartDashboard.putNumber("Right Encoder", Drivetrain.rightMotorA.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Left Encoder", Drivetrain.leftMotorA.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Raw Gyro Heading", DrivetrainSubsystem.gyro.getAngle());
+    SmartDashboard.putNumber("Right Encoder", DrivetrainSubsystem.rightMotorA.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Left Encoder", DrivetrainSubsystem.leftMotorA.getSelectedSensorPosition(0));
 
   }
 
@@ -100,8 +100,8 @@ public class Robot extends TimedRobot {
   }
 
   public void teleopInit(){
-    Drivetrain.setBrakeMode();
-    Drivetrain.leftMotorB.setSelectedSensorPosition(0, 0, 10);
+    DrivetrainSubsystem.setBrakeMode();
+    DrivetrainSubsystem.leftMotorB.setSelectedSensorPosition(0, 0, 10);
 
   }
 

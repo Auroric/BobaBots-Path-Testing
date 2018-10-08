@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.Drivetrain.Drivetrain;
+import frc.robot.Drivetrain.DrivetrainSubsystem;
 import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSpin;
 
@@ -68,7 +68,7 @@ public class OI {
         dpadUP_LEFT = new XBPovButton(xboxcontroller, UP_LEFT);
         dpadNONE = new XBPovButton(xboxcontroller, NONE);
 
-        dpadLEFT.whenPressed(new RunCommand( () -> Drivetrain.shiftGear() ));
+        dpadLEFT.whenPressed(new RunCommand( () -> DrivetrainSubsystem.shiftGear() ));
         ButtonY.whileHeld(new IntakeSpin(-0.7));
         ButtonY.whenReleased(new IntakeSpin(0));
 

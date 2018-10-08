@@ -1,9 +1,9 @@
 package frc.robot.OI;
 
+import static frc.robot.Drivetrain.DrivetrainSubsystem.leftMotorB;
+
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-
-import static frc.robot.Drivetrain.Drivetrain.leftMotorB;
 
 
 public class ElevatorEncoderSource implements PIDSource {

@@ -11,6 +11,10 @@ task generateProfiles(type:Exec) {
     commandLine 'java', '-jar', '../generation/path-util-1.2.jar'
 }
 
+repositories {
+    mavenCentral()
+}
+
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
@@ -45,6 +49,8 @@ dependencies {
     compile ctre()
     compile navx()
     compile pathfinder()
+
+    compile "org.apache.commons:commons-math3:3.6"
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

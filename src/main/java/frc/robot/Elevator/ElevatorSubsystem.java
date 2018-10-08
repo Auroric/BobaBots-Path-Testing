@@ -1,13 +1,13 @@
 package frc.robot.Elevator;
 
-import static frc.robot.Drivetrain.Drivetrain.leftMotorB;
+import static frc.robot.Drivetrain.DrivetrainSubsystem.leftMotorB;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Elevator.commands.elevate;
+import frc.robot.Elevator.Elevate;
 import frc.robot.OI.ElevatorEncoderSource;
 
 public class ElevatorSubsystem extends Subsystem {
@@ -80,7 +80,7 @@ public class ElevatorSubsystem extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new elevate());
+        setDefaultCommand(new Elevate());
     }
 
 }

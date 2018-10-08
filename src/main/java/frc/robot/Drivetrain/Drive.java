@@ -26,7 +26,7 @@ public class Drive extends Command {
     public static final double kRinterceptLow = 1.058;
 
     public Drive(){
-        requires(Drivetrain.getInstance());
+        requires(DrivetrainSubsystem.getInstance());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Drive extends Command {
         }
         
         //Checks the current position of the shifters in order to determine which values to deadband the motor output to
-        switch(Drivetrain.shifter.get()){
+        switch(DrivetrainSubsystem.shifter.get()){
             case kForward: 
                 left = deadbandY(left, kLinterceptHigh/12.0);
                 right = deadbandY(right, kRinterceptHigh/12.0);
@@ -69,13 +69,12 @@ public class Drive extends Command {
         }
         
         //Drives the motors at calculated speeds
-        Drivetrain.drive(left, right);
+        DrivetrainSubsystem.drive(left, right);
     }
 
     /**
-     * Returns 0 if absolute value of input is less than deadband
-     * Rescales values of input using the line going from (+-deadband, 0) and (+-1, +-1)
-     * Can be used to achieve the full range of values while still deadbanding a joystick
+     * Essentially an implementation of the slope formula, m = (y1-y2)/(x1-x2) = (1 - 0)/(1 - deadband)
+     * Uses this slope and multiplies it by the input to deadband a controller from deadband to 1
      * 
      * @param input      an input value to test for deadband
      * @param deadband   deadband value to check the input against
@@ -105,18 +104,17 @@ public class Drive extends Command {
     }
 
     /**
-     * Shifts the input upwards, similar to a vertical deadband
-     * Can be used in unison with deadbandX to create a deadband zone in the horiz. and vert. directions
-     * i.e. Rescaling the output of a joystick from 50-100 while also having an input deadband
+     * Essentially deadbandX but in the y direction
+     * m = (y1-y2)/(x1-x2) = (1-deadband)(1-0)
      * 
      * @param input      input value to test for deadband 
      * @param deadband   determines values where method returns 0
      * @return           returns a double rescaled according to deadband
      */
     public static double deadbandY(double input, double deadband){
-        if(Math.abs(input)==0.0){
+        if(Math.abs(input) == 0.0){
             return 0;
-        } else if(Math.abs(input) ==1){
+        } else if(Math.abs(input) == 1){
             return input;
         } else {
             return input*(1.0-deadband)+Math.signum(input)*deadband;

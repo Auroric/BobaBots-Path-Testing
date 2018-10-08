@@ -1,7 +1,6 @@
-package frc.robot.OI;
+package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.PathFollower;
 import frc.robot.Robot.Position;
 import frc.robot.Robot.Priority;
 

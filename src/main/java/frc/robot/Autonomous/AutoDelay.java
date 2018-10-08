@@ -1,6 +1,5 @@
-package frc.robot.OI;
+package frc.robot.Autonomous;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
