@@ -81,7 +81,9 @@ public class CharacterizeDrive extends Command {
     protected void initialize(){
         applySpeeds();
         for(dtSide side : sides){
-            side.addPoint();
+            if(side.speed >= 0.1){
+                side.addPoint();
+            }
         }
         timer.start();
     }
