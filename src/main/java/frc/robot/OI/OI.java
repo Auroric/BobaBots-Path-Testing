@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.Autonomous.CharacterizeDrive;
 import frc.robot.Drivetrain.DrivetrainSubsystem;
 import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSpin;
@@ -84,7 +85,8 @@ public class OI {
         Button2.whileHeld(new IntakeSpin(0.7));
         Button2.whenReleased(new IntakeSpin(0));
         
-        dpadRIGHT.whenPressed(new RunCommand( () -> ElevatorSubsystem.overrideLimit() ));
+        //dpadRIGHT.whenPressed(new RunCommand( () -> ElevatorSubsystem.overrideLimit() ));
+
     }
 
     public double throttleValue() {

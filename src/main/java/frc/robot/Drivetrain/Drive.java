@@ -1,7 +1,11 @@
 package frc.robot.Drivetrain;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+
+//import static frc.robot.Drivetrain.DrivetrainSubsystem.motors;
 
 public class Drive extends Command {
     private static double right, left;
@@ -45,8 +49,8 @@ public class Drive extends Command {
         turn = deadbandX(turn, kJoystickDeadband);
         
         if(throttle == 0){ //Quickturning when no input from throttle stick
-            left = turn;
-            right = -turn;
+            left = 0.5*turn;
+            right = -0.5*turn;
         } else { //Binary curvature drive when throttle stick has input, squares outputs to add sensitivity curve
             left = throttle+throttle*turn;
             right = throttle-throttle*turn;
@@ -55,15 +59,19 @@ public class Drive extends Command {
             right = exponentiate(right, 2);
         }
         
+
         //Checks the current position of the shifters in order to determine which values to deadband the motor output to
         switch(DrivetrainSubsystem.shifter.get()){
             case kForward: 
                 left = deadbandY(left, kLinterceptHigh/12.0);
                 right = deadbandY(right, kRinterceptHigh/12.0);
+                for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(4.0, 10);
                 break;
             case kReverse:
                 left = deadbandY(left, kLinterceptLow/12.0);
                 right = deadbandY(right, kRinterceptLow/12.0);
+                for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(0.5, 10);
+                break;
             case kOff:
                 break;
         }
@@ -120,6 +128,5 @@ public class Drive extends Command {
             return input*(1.0-deadband)+Math.signum(input)*deadband;
         }
     }
-
 
 }

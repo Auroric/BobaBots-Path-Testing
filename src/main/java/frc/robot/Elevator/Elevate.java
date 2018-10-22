@@ -35,7 +35,7 @@ public class Elevate extends Command {
             }*/
 
             if(!overrideLimit && elevateAxis < 0 && DrivetrainSubsystem.leftMotorB.getSelectedSensorPosition(0)-15000 > 0){
-                elevateAxis = -0.2;
+                elevateAxis = 0;
             }
             Robot.elevator.elevate(elevateAxis);
 
@@ -47,7 +47,7 @@ public class Elevate extends Command {
             /*if(!elevator.elevatorControl.isEnabled()){ //if PIDController is *not* enabled, enable it
                 elevator.elevatorControl.enable();
             }*/
-            Robot.elevator.elevate(-0.2);
+            Robot.elevator.elevate(0);
             //Stall Percentage Old Intake w/o Cube: -0.2
             //REEE
             //TODO: Need to reverse elevator motors b/c sparks reading red when going up

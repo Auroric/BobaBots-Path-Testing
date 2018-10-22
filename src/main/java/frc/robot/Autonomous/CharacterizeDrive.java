@@ -103,7 +103,7 @@ public class CharacterizeDrive extends Command {
     }
 
     protected boolean isFinished(){
-        return(leftSide.percentOut >= 1.0 && rightSide.percentOut >= 1.0);
+        return(leftSide.percentOut >= 0.3 && rightSide.percentOut >= 0.3);
     }
 
     protected void end(){

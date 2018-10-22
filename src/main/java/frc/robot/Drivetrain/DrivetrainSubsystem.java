@@ -31,13 +31,13 @@ public class DrivetrainSubsystem extends Subsystem {
     public static final DoubleSolenoid shifter = new DoubleSolenoid(1, 4, 5);
     public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
     public static final TalonSRX
-            leftMotorA = new TalonSRX(4),
-            leftMotorB = new TalonSRX(3),
+            leftMotorA = new TalonSRX(3),
+            leftMotorB = new TalonSRX(4),
             rightMotorA = new TalonSRX(2),
             rightMotorB = new TalonSRX(1);
 
     //Creates arrays for various motors so I can call the same methods for each at the same time
-    private static final TalonSRX[] motors = {leftMotorA, leftMotorB, rightMotorB, rightMotorA};
+    public static final TalonSRX[] motors = {leftMotorA, leftMotorB, rightMotorB, rightMotorA};
     private static final TalonSRX[] leftMotors = {leftMotorA, leftMotorB};
     private static final TalonSRX[] rightMotors = {rightMotorA, rightMotorB};
 
@@ -46,6 +46,7 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     private DrivetrainSubsystem() {
+        //compressor.stop();
         //Setting leader and follower talons
         leftMotorB.follow(leftMotorA);
         rightMotorB.follow(rightMotorA);
@@ -73,6 +74,7 @@ public class DrivetrainSubsystem extends Subsystem {
 
             motor.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
             motor.configMotionAcceleration(kAccel, kTimeout);
+
         }
         
         //Left drivetrain encoder
@@ -89,6 +91,8 @@ public class DrivetrainSubsystem extends Subsystem {
         leftMotorB.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
         leftMotorB.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         leftMotorB.setSensorPhase(false);
+
+
 
     }
 
@@ -144,6 +148,6 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public static void stopCompressor(){
-        compressor.stop();
+        //compressor.stop();
     }
 }

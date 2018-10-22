@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Autonomous.AutonomousCommand;
+import frc.robot.Autonomous.PathFollower;
 import frc.robot.Drivetrain.DrivetrainSubsystem;
 import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSubsystem;
@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     intake = IntakeSubsystem.getInstance();
-    elevator = ElevatorSubsystem.getInstance();
+    //elevator = ElevatorSubsystem.getInstance();
     drivetrain = DrivetrainSubsystem.getInstance();
     oi = new OI();
     /*
@@ -84,8 +84,9 @@ public class Robot extends TimedRobot {
     Position position = positionChooser.getSelected();
     Priority priority = priorityChooser.getSelected();
 
-    autonomousCommand = new AutonomousCommand(gameData, position, priority);
+    //autonomousCommand = new AutonomousCommand(gameData, position, priority);
 
+    new PathFollower("Straight15ft").start();
   }
 
   @Override
@@ -93,7 +94,7 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   
   }
-
+ 
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
