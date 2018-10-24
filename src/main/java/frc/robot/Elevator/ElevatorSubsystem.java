@@ -1,57 +1,84 @@
 package frc.robot.Elevator;
 
-import static frc.robot.Drivetrain.DrivetrainSubsystem.leftMotorB;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Elevator.Elevate;
-import frc.robot.OI.ElevatorEncoderSource;
 
 public class ElevatorSubsystem extends Subsystem {
     
-    public static final int elevatorSparkA = 4;
-    public static final int elevatorSparkB = 5;
     private static ElevatorSubsystem instance = null;
-
-    private final Spark ElevatorA = new Spark(elevatorSparkA);
-    private final Spark ElevatorB = new Spark(elevatorSparkB);
-
-    public static boolean overrideLimit = false;
-
-    private final SpeedControllerGroup ElevatorSparks = new SpeedControllerGroup(ElevatorA, ElevatorB);
-    private ElevatorEncoderSource ElevatorEncoderSource = new ElevatorEncoderSource();
-    public PIDController elevatorControl = new PIDController(0,0,0,0, ElevatorEncoderSource, ElevatorSparks);
-
-    private ElevatorSubsystem() {
-        SmartDashboard.putNumber("Spark Output",ElevatorSparks.get());
-        /*elevatorControl.setSetpoint(0);
-        elevatorControl.setPercentTolerance(2);*/
-    }
-    public static ElevatorSubsystem getInstance()
-    {
-        if (instance == null)
-            instance = new ElevatorSubsystem();
-
+    public static ElevatorSubsystem getInstance(){
+        if (instance == null) instance = new ElevatorSubsystem();
         return instance;
     }
 
-    public static void overrideLimit(){
-        if(overrideLimit){
-            overrideLimit = true;
-        } else {
-            overrideLimit = false;
-        }
+    private static TalonSRX elevatorMotorA = new TalonSRX(5);
+    private static VictorSPX elevatorMotorB = new VictorSPX(2);
+
+    private static final int kTimeout = 10;
+    private static final int kPIDIndex = 0;
+
+    private static final int kCruiseVelo = 500;
+    private static final int kAccel = 1000;
+
+    private static final int kP = 0, kI = 0, kD = 0;
+    private static final double kF = 0.3808637379;
+
+    private ElevatorSubsystem() {
+        elevatorMotorB.follow(elevatorMotorA);;
+
+        //Current and voltage settings
+        elevatorMotorA.configPeakCurrentLimit(40, kTimeout);
+        elevatorMotorA.configPeakCurrentDuration(500, kTimeout);
+
+        elevatorMotorA.configContinuousCurrentLimit(20, kTimeout);
+        elevatorMotorA.configVoltageCompSaturation(12, kTimeout);
+        elevatorMotorA.enableVoltageCompensation(true);
+
+        elevatorMotorB.configVoltageCompSaturation(12, kTimeout);
+        elevatorMotorB.enableVoltageCompensation(true);
+
+        //PID Gains and settings
+        elevatorMotorA.selectProfileSlot(0, kPIDIndex);
+        elevatorMotorA.config_kF(kPIDIndex, kF, kTimeout);
+        elevatorMotorA.config_kP(kPIDIndex, kP, kTimeout);
+        elevatorMotorA.config_kI(kPIDIndex, kI, kTimeout);
+        elevatorMotorA.config_kD(kPIDIndex, kD, kTimeout);
+
+        elevatorMotorB.selectProfileSlot(0, kPIDIndex);
+        elevatorMotorB.config_kF(kPIDIndex, kF, kTimeout);
+        elevatorMotorB.config_kP(kPIDIndex, kP, kTimeout);
+        elevatorMotorB.config_kI(kPIDIndex, kI, kTimeout);
+        elevatorMotorB.config_kD(kPIDIndex, kD, kTimeout);
+
+        elevatorMotorA.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
+        elevatorMotorA.configMotionAcceleration(kAccel, kTimeout);
+
+        elevatorMotorB.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
+        elevatorMotorB.configMotionAcceleration(kAccel, kTimeout);
+        
     }
 
     public void elevate(double speed){
-        ElevatorSparks.set(speed);
+        elevatorMotorA.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void elevate(ElevatorHeight height){
+        elevatorMotorA.set(ControlMode.MotionMagic, height.encoderTarget);
+    }
+
+    public void elevateToTick(int ticks){
+        elevatorMotorA.set(ControlMode.MotionMagic, ticks);
     }
 
     public void resetEncoders(){
-        leftMotorB.setSelectedSensorPosition(0,0,10);
+        elevatorMotorA.setSelectedSensorPosition(0, kPIDIndex, kTimeout);
+    }
+
+    public int getEncoder(){
+        return elevatorMotorA.getSelectedSensorPosition(kPIDIndex);
     }
 
     public enum ElevatorHeight {
@@ -69,13 +96,6 @@ public class ElevatorSubsystem extends Subsystem {
             return encoderTarget;
         }
 
-    }
-
-    public void setElevator(ElevatorHeight target){
-        elevatorControl.setSetpoint((double)target.getValue());
-    }
-    public void setElevator(double target){
-        elevatorControl.setSetpoint(target);
     }
 
     @Override

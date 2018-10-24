@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-//import frc.robot.Robot;
-
 public class IntakeSubsystem extends Subsystem {
 
     private static IntakeSubsystem instance = null;
