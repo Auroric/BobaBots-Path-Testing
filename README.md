@@ -1,2 +1,6 @@
 # BobaBots-Path-Testing
-Code to test auto using pathfinder and drivetrain, will eventually be merged back to master
+
+Update Revision:
+-CalGames Branch is code for Capital City Classic 2018. 
+-Beaware of merge errors due to conflicting path .csv
+
