@@ -1,9 +1,13 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 /*import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;*/
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -29,12 +33,11 @@ public class Robot extends TimedRobot {
   SendableChooser<Priority> priorityChooser;
 
   Command autonomousCommand;
-  
 
   @Override
   public void robotInit() {
     intake = IntakeSubsystem.getInstance();
-    //elevator = ElevatorSubsystem.getInstance();
+    elevator = ElevatorSubsystem.getInstance();
     drivetrain = DrivetrainSubsystem.getInstance();
     oi = new OI();
     /*
@@ -98,6 +101,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+
   }
 
   public void teleopInit(){

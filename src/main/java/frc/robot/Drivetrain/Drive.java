@@ -43,12 +43,15 @@ public class Drive extends Command {
         //Getting the raw joystick values from OI
         double throttle = Robot.oi.throttleValue();
         double turn = Robot.oi.turnValue();
+
+        boolean quickturn = throttle == 0;
+        double quickturnRamp = 0.0;
         
         //Deadbanding the joystick values to avoid moving when there is no input
         throttle = deadbandX(throttle, kJoystickDeadband);
         turn = deadbandX(turn, kJoystickDeadband);
         
-        if(throttle == 0){ //Quickturning when no input from throttle stick
+        if(quickturn){ //Quickturning when no input from throttle stick
             left = 0.5*turn;
             right = -0.5*turn;
         } else { //Binary curvature drive when throttle stick has input, squares outputs to add sensitivity curve
@@ -66,11 +69,19 @@ public class Drive extends Command {
                 left = deadbandY(left, kLinterceptHigh/12.0);
                 right = deadbandY(right, kRinterceptHigh/12.0);
                 for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(4.0, 10);
+                
+                if(quickturn){
+                    for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(quickturnRamp, 10);
+                }
                 break;
             case kReverse:
                 left = deadbandY(left, kLinterceptLow/12.0);
                 right = deadbandY(right, kRinterceptLow/12.0);
                 for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(0.5, 10);
+
+                if(quickturn){
+                    for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(quickturnRamp, 10);
+                }
                 break;
             case kOff:
                 break;

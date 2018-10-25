@@ -85,8 +85,6 @@ public class OI {
         Button2.whileHeld(new IntakeSpin(0.7));
         Button2.whenReleased(new IntakeSpin(0));
         
-        //dpadRIGHT.whenPressed(new RunCommand( () -> ElevatorSubsystem.overrideLimit() ));
-
     }
 
     public double throttleValue() {
