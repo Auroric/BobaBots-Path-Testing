@@ -75,7 +75,11 @@ public class DrivetrainSubsystem extends Subsystem {
             motor.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
             motor.configMotionAcceleration(kAccel, kTimeout);
 
+            //motor.configOpenloopRamp(0.5, 10);
+
         }
+
+        //setOpenLoopRamp(0.25);
         
         //Left drivetrain encoder
         leftMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
@@ -86,14 +90,14 @@ public class DrivetrainSubsystem extends Subsystem {
         rightMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
         rightMotorA.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
         rightMotorA.setSensorPhase(false);
-        
-        //Elevator Encoder
-        leftMotorB.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
-        leftMotorB.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-        leftMotorB.setSensorPhase(false);
 
+    }
 
-
+    public static void setOpenLoopRamp(double ramp){
+        leftMotorA.configOpenloopRamp(ramp, 10);
+        leftMotorB.configOpenloopRamp(ramp, 10);
+        rightMotorA.configOpenloopRamp(ramp, 10);
+        rightMotorB.configOpenloopRamp(ramp, 10);
     }
 
     //Sets drivetrain sides to speed parameters

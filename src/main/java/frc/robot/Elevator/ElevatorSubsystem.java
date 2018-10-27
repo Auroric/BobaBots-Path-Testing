@@ -1,6 +1,8 @@
 package frc.robot.Elevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -27,7 +29,7 @@ public class ElevatorSubsystem extends Subsystem {
     private static final double kF = 0.3808637379;
 
     private ElevatorSubsystem() {
-        elevatorMotorB.follow(elevatorMotorA);;
+        //elevatorMotorB.follow(elevatorMotorA);
 
         //Current and voltage settings
         elevatorMotorA.configPeakCurrentLimit(40, kTimeout);
@@ -58,11 +60,27 @@ public class ElevatorSubsystem extends Subsystem {
 
         elevatorMotorB.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
         elevatorMotorB.configMotionAcceleration(kAccel, kTimeout);
+
+        elevatorMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
+        elevatorMotorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        elevatorMotorA.setSensorPhase(false);
         
     }
 
+    public static double elevAVoltage(){
+        return elevatorMotorA.getMotorOutputVoltage();
+    }
+    public static double elevBVoltage(){
+        return elevatorMotorB.getMotorOutputVoltage();
+    }
+
     public void elevate(double speed){
-        elevatorMotorA.set(ControlMode.PercentOutput, speed);
+        double demand = speed;
+        if(speed > 0.5){
+           demand = 0.5; 
+        }
+        elevatorMotorA.set(ControlMode.PercentOutput, demand*2);
+        elevatorMotorB.set(ControlMode.PercentOutput, demand);
     }
 
     public void elevate(ElevatorHeight height){

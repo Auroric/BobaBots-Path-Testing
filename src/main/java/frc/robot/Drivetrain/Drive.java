@@ -52,8 +52,8 @@ public class Drive extends Command {
         turn = deadbandX(turn, kJoystickDeadband);
         
         if(quickturn){ //Quickturning when no input from throttle stick
-            left = 0.5*turn;
-            right = -0.5*turn;
+            left = turn;
+            right = -turn;
         } else { //Binary curvature drive when throttle stick has input, squares outputs to add sensitivity curve
             left = throttle+throttle*turn;
             right = throttle-throttle*turn;
@@ -68,20 +68,21 @@ public class Drive extends Command {
             case kForward: 
                 left = deadbandY(left, kLinterceptHigh/12.0);
                 right = deadbandY(right, kRinterceptHigh/12.0);
-                for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(4.0, 10);
+                /*for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(0.5, 10);
                 
                 if(quickturn){
                     for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(quickturnRamp, 10);
-                }
+                }*/
                 break;
             case kReverse:
                 left = deadbandY(left, kLinterceptLow/12.0);
                 right = deadbandY(right, kRinterceptLow/12.0);
-                for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(0.5, 10);
 
+                /*
+                for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(0.5, 10);
                 if(quickturn){
                     for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(quickturnRamp, 10);
-                }
+                }*/
                 break;
             case kOff:
                 break;

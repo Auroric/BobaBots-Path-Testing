@@ -1,19 +1,14 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-/*import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;*/
-
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Autonomous.PathFollower;
+import frc.robot.Autonomous.AutonomousCommand;
 import frc.robot.Drivetrain.DrivetrainSubsystem;
 import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSubsystem;
@@ -26,7 +21,7 @@ public class Robot extends TimedRobot {
   public static IntakeSubsystem intake;
   public static ElevatorSubsystem elevator;
 
-  //UsbCamera camera;
+  UsbCamera camera;
   public String gameData;
 
   SendableChooser<Position> positionChooser;
@@ -40,11 +35,11 @@ public class Robot extends TimedRobot {
     elevator = ElevatorSubsystem.getInstance();
     drivetrain = DrivetrainSubsystem.getInstance();
     oi = new OI();
-    /*
+    
     camera = CameraServer.getInstance().startAutomaticCapture(0);
 
     camera.setResolution(320, 240);
-    camera.setFPS(15);*/
+    camera.setFPS(15);
 
     positionChooser = new SendableChooser<Position>();
     positionChooser.addDefault("Center", Position.CENTER);
@@ -87,9 +82,9 @@ public class Robot extends TimedRobot {
     Position position = positionChooser.getSelected();
     Priority priority = priorityChooser.getSelected();
 
-    //autonomousCommand = new AutonomousCommand(gameData, position, priority);
+    autonomousCommand = new AutonomousCommand(gameData, position, priority);
 
-    new PathFollower("Straight15ft").start();
+    //new PathFollower("Straight15ft").start();
   }
 
   @Override

@@ -101,7 +101,8 @@ public class PathFollower extends Command{
             SmartDashboard.putNumber("Path right enc error", toTicks(followerRight.getSegment().position)-DrivetrainSubsystem.rightMotorA.getSelectedSensorPosition(0));
             //SmartDashboard.putNumber("Left path encoder", DrivetrainSubsystem.leftMotorA.getSelectedSensorPosition(0));
             //SmartDashboard.putNumber("Right path encoder", DrivetrainSubsystem.rightMotorA.getSelectedSensorPosition(0)); 
-
+            SmartDashboard.putNumber("Path Position Right", followerRight.getSegment().position);
+            SmartDashboard.putNumber("Path Position Left", followerLeft.getSegment().position);
         }
 
         SmartDashboard.putNumber("Path commanded left speed", leftspeed);
@@ -110,8 +111,7 @@ public class PathFollower extends Command{
         SmartDashboard.putNumber("Robot Position Right", toMeters(DrivetrainSubsystem.rightMotorA.getSelectedSensorPosition(0)));
         SmartDashboard.putNumber("Robot Position Left", toMeters(DrivetrainSubsystem.leftMotorA.getSelectedSensorPosition(0)));
 
-        SmartDashboard.putNumber("Path Position Right", followerRight.getSegment().position);
-        SmartDashboard.putNumber("Path Position Left", followerLeft.getSegment().position);
+        
         DrivetrainSubsystem.drive(leftspeed, rightspeed); //Drives at calculated speeds
     }
 
