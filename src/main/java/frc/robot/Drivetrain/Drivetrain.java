@@ -1,3 +1,4 @@
+
 package frc.robot.Drivetrain;
 
 import java.util.Arrays;
@@ -14,11 +15,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class DrivetrainSubsystem extends Subsystem {
+public class Drivetrain extends Subsystem {
 
-    private static DrivetrainSubsystem instance = null;
-    public static DrivetrainSubsystem getInstance(){
-        if (instance == null) instance = new DrivetrainSubsystem();
+    private static Drivetrain instance = null;
+    public static Drivetrain getInstance(){
+        if (instance == null) instance = new Drivetrain();
         return instance;
     }
 
@@ -31,13 +32,13 @@ public class DrivetrainSubsystem extends Subsystem {
     public static final DoubleSolenoid shifter = new DoubleSolenoid(1, 4, 5);
     public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
     public static final TalonSRX
-            leftMotorA = new TalonSRX(3),
-            leftMotorB = new TalonSRX(4),
+            leftMotorA = new TalonSRX(4),
+            leftMotorB = new TalonSRX(3),
             rightMotorA = new TalonSRX(2),
             rightMotorB = new TalonSRX(1);
 
     //Creates arrays for various motors so I can call the same methods for each at the same time
-    public static final TalonSRX[] motors = {leftMotorA, leftMotorB, rightMotorB, rightMotorA};
+    private static final TalonSRX[] motors = {leftMotorA, leftMotorB, rightMotorB, rightMotorA};
     private static final TalonSRX[] leftMotors = {leftMotorA, leftMotorB};
     private static final TalonSRX[] rightMotors = {rightMotorA, rightMotorB};
 
@@ -45,13 +46,12 @@ public class DrivetrainSubsystem extends Subsystem {
         setDefaultCommand(new Drive());
     }
 
-    private DrivetrainSubsystem() {
-        //compressor.stop();
+    private Drivetrain() {
         //Setting leader and follower talons
         leftMotorB.follow(leftMotorA);
         rightMotorB.follow(rightMotorA);
 
-        //DrivetrainSubsystem negation settings
+        //Drivetrain negation settings
         Arrays.stream(leftMotors).forEach(motor -> motor.setInverted(true));
         Arrays.stream(rightMotors).forEach(motor -> motor.setInverted(false));
 
@@ -64,7 +64,6 @@ public class DrivetrainSubsystem extends Subsystem {
             motor.configContinuousCurrentLimit(35, kTimeout);
             motor.configVoltageCompSaturation(12, kTimeout);
             motor.enableVoltageCompensation(true);
-            motor.enableCurrentLimit(true);
 
             //PID Gains and settings
             motor.selectProfileSlot(0, kPIDIndex);
@@ -75,12 +74,7 @@ public class DrivetrainSubsystem extends Subsystem {
 
             motor.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
             motor.configMotionAcceleration(kAccel, kTimeout);
-
-            //motor.configOpenloopRamp(0.5, 10);
-
         }
-
-        //setOpenLoopRamp(0.25);
         
         //Left drivetrain encoder
         leftMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
@@ -94,15 +88,10 @@ public class DrivetrainSubsystem extends Subsystem {
 
     }
 
-    public static void setOpenLoopRamp(double ramp){
-        leftMotorA.configOpenloopRamp(ramp, 10);
-        leftMotorB.configOpenloopRamp(ramp, 10);
-        rightMotorA.configOpenloopRamp(ramp, 10);
-        rightMotorB.configOpenloopRamp(ramp, 10);
-    }
-
     //Sets drivetrain sides to speed parameters
     public static void drive(double leftspeed, double rightspeed) {
+        
+        //System.out.println(leftspeed + ", " + rightspeed);
 
         leftMotorA.set(ControlMode.PercentOutput, leftspeed);
         rightMotorA.set(ControlMode.PercentOutput, rightspeed);
@@ -153,6 +142,6 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public static void stopCompressor(){
-        //compressor.stop();
+        compressor.stop();
     }
 }
