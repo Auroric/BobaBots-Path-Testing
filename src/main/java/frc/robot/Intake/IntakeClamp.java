@@ -16,6 +16,7 @@ public class IntakeClamp extends Command {
     protected void execute(){
         if(clampStatus){
             IntakeSubsystem.clampIntake();
+            //DONE
         } else{
             IntakeSubsystem.releaseIntake();
         }
