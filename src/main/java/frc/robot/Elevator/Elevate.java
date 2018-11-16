@@ -21,7 +21,7 @@ public class Elevate extends Command {
         SmartDashboard.putNumber("Elevator Joystick Input", elevateAxis);
         SmartDashboard.putNumber("Elevator encoder", ElevatorSubsystem.getEncoder());
         SmartDashboard.putNumber("Elevator output bottom", ElevatorSubsystem.elevAVoltage());
-        SmartDashboard.putNumber("Elevator output top", ElevatorSubsystem.elevBVoltage());
+      //  SmartDashboard.putNumber("Elevator output top", ElevatorSubsystem.elevBVoltage());
 
         if(elevateAxis != 0){
             ElevatorSubsystem.elevate(elevateAxis);

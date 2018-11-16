@@ -41,9 +41,10 @@ public class ElevatorSubsystem extends Subsystem {
         elevatorMotorA.configContinuousCurrentLimit(20, kTimeout);
         elevatorMotorA.configVoltageCompSaturation(12, kTimeout);
         elevatorMotorA.enableVoltageCompensation(true);
+        elevatorMotorA.enableCurrentLimit(true);
 
-        elevatorMotorB.configVoltageCompSaturation(12, kTimeout);
-        elevatorMotorB.enableVoltageCompensation(true);
+        //elevatorMotorB.configVoltageCompSaturation(12, kTimeout);
+        //elevatorMotorB.enableVoltageCompensation(true);
 
         //PID Gains and settings
         elevatorMotorA.selectProfileSlot(0, kPIDIndex);
@@ -52,17 +53,17 @@ public class ElevatorSubsystem extends Subsystem {
         elevatorMotorA.config_kI(kPIDIndex, kI, kTimeout);
         elevatorMotorA.config_kD(kPIDIndex, kD, kTimeout);
 
-        elevatorMotorB.selectProfileSlot(0, kPIDIndex);
+       /* elevatorMotorB.selectProfileSlot(0, kPIDIndex);
         elevatorMotorB.config_kF(kPIDIndex, kF, kTimeout);
         elevatorMotorB.config_kP(kPIDIndex, kP, kTimeout);
         elevatorMotorB.config_kI(kPIDIndex, kI, kTimeout);
         elevatorMotorB.config_kD(kPIDIndex, kD, kTimeout);
-
+        */
         elevatorMotorA.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
         elevatorMotorA.configMotionAcceleration(kAccel, kTimeout);
 
-        elevatorMotorB.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
-        elevatorMotorB.configMotionAcceleration(kAccel, kTimeout);
+     //   elevatorMotorB.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
+       // elevatorMotorB.configMotionAcceleration(kAccel, kTimeout);
 
         elevatorMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
         elevatorMotorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -73,9 +74,9 @@ public class ElevatorSubsystem extends Subsystem {
     public static double elevAVoltage(){
         return elevatorMotorA.getMotorOutputVoltage();
     }
-    public static double elevBVoltage(){
+  /*  public static double elevBVoltage(){
         return elevatorMotorB.getMotorOutputVoltage();
-    }
+    }*/
 
     public static void elevate(double speed){
         elevatorMotorA.set(ControlMode.PercentOutput, speed);
