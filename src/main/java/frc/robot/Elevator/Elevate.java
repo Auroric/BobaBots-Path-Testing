@@ -8,6 +8,8 @@ import frc.robot.OI.OI;
 
 public class Elevate extends Command {
 
+    public static double holdVoltage = 0.15;
+
     public Elevate(){
         requires(Robot.elevator);
     }
@@ -16,16 +18,15 @@ public class Elevate extends Command {
         double elevateAxis = OI.elevateValue(); //sets elevateAxis to joystick input
         elevateAxis = Drive.deadbandX(elevateAxis, 0.05);
 
-
-        SmartDashboard.putNumber("Elevator Joystick Input",elevateAxis);
-        SmartDashboard.putNumber("Elevator encoder", Robot.elevator.getEncoder());
+        SmartDashboard.putNumber("Elevator Joystick Input", elevateAxis);
+        SmartDashboard.putNumber("Elevator encoder", ElevatorSubsystem.getEncoder());
         SmartDashboard.putNumber("Elevator output bottom", ElevatorSubsystem.elevAVoltage());
       //  SmartDashboard.putNumber("Elevator output top", ElevatorSubsystem.elevBVoltage());
 
         if(elevateAxis != 0){
-            Robot.elevator.elevate(elevateAxis);
+            ElevatorSubsystem.elevate(elevateAxis);
         } else {
-            Robot.elevator.elevate(-0.15);
+            ElevatorSubsystem.elevate(holdVoltage);
         }
     }
 

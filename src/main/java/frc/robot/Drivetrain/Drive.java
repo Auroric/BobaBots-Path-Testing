@@ -2,6 +2,7 @@ package frc.robot.Drivetrain;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -11,7 +12,7 @@ public class Drive extends Command {
     private static double right, left;
     boolean autoEnabled = false;
 
-    private static final double kJoystickDeadband = 0.05;
+    private static final double kJoystickDeadband = 0.15;
 
     /**
      * Left: 21.51 ft/s, 6.559 m/s, equation: 582x-796, intercept at 1.3677v
@@ -44,22 +45,30 @@ public class Drive extends Command {
         double throttle = Robot.oi.throttleValue();
         double turn = Robot.oi.turnValue();
 
-        boolean quickturn = throttle == 0;
         double quickturnRamp = 0.0;
         
         //Deadbanding the joystick values to avoid moving when there is no input
         throttle = deadbandX(throttle, kJoystickDeadband);
         turn = deadbandX(turn, kJoystickDeadband);
+        //System.out.println(turn);
+
+        boolean quickturn = throttle == 0;
         
         if(quickturn){ //Quickturning when no input from throttle stick
-            left = turn;
-            right = -turn;
+            left = 0.75*turn;
+            right = -0.75*turn;
         } else { //Binary curvature drive when throttle stick has input, squares outputs to add sensitivity curve
             left = throttle+throttle*turn;
             right = throttle-throttle*turn;
 
             left = exponentiate(left, 2);
             right = exponentiate(right, 2);
+        }
+
+        //System.out.println("driving");
+        DrivetrainSubsystem.setOpenLoopRamp(0.5);
+        if(quickturn){
+            DrivetrainSubsystem.setOpenLoopRamp(0);
         }
         
 
@@ -68,21 +77,12 @@ public class Drive extends Command {
             case kForward: 
                 left = deadbandY(left, kLinterceptHigh/12.0);
                 right = deadbandY(right, kRinterceptHigh/12.0);
-                /*for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(0.5, 10);
-                
-                if(quickturn){
-                    for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(quickturnRamp, 10);
-                }*/
+
                 break;
             case kReverse:
                 left = deadbandY(left, kLinterceptLow/12.0);
                 right = deadbandY(right, kRinterceptLow/12.0);
 
-                /*
-                for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(0.5, 10);
-                if(quickturn){
-                    for(TalonSRX motor : DrivetrainSubsystem.motors) motor.configOpenloopRamp(quickturnRamp, 10);
-                }*/
                 break;
             case kOff:
                 break;

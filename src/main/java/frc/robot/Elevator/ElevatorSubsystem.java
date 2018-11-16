@@ -30,10 +30,16 @@ public class ElevatorSubsystem extends Subsystem {
 
     private ElevatorSubsystem() {
         elevatorMotorB.follow(elevatorMotorA);
+<<<<<<< HEAD
+=======
+        elevatorMotorA.setInverted(true);
+        elevatorMotorB.setInverted(true);
+>>>>>>> fixingCommit
 
         //Current and voltage settings
         elevatorMotorA.configPeakCurrentLimit(40, kTimeout);
         elevatorMotorA.configPeakCurrentDuration(500, kTimeout);
+        elevatorMotorA.enableCurrentLimit(true);
 
         elevatorMotorA.configContinuousCurrentLimit(20, kTimeout);
         elevatorMotorA.configVoltageCompSaturation(12, kTimeout);
@@ -75,28 +81,23 @@ public class ElevatorSubsystem extends Subsystem {
         return elevatorMotorB.getMotorOutputVoltage();
     }*/
 
-    public void elevate(double speed){
-        double demand = speed;
-        if(speed > 0.5){
-           demand = 0.5; 
-        }
-        elevatorMotorA.set(ControlMode.PercentOutput, demand);
-       // elevatorMotorB.set(ControlMode.PercentOutput, demand);
+    public static void elevate(double speed){
+        elevatorMotorA.set(ControlMode.PercentOutput, speed);
     }
 
-    public void elevate(ElevatorHeight height){
+    public static void elevate(ElevatorHeight height){
         elevatorMotorA.set(ControlMode.MotionMagic, height.encoderTarget);
     }
 
-    public void elevateToTick(int ticks){
+    public static void elevateToTick(int ticks){
         elevatorMotorA.set(ControlMode.MotionMagic, ticks);
     }
 
-    public void resetEncoders(){
+    public static void resetEncoders(){
         elevatorMotorA.setSelectedSensorPosition(0, kPIDIndex, kTimeout);
     }
 
-    public int getEncoder(){
+    public static int getEncoder(){
         return elevatorMotorA.getSelectedSensorPosition(kPIDIndex);
     }
 

@@ -14,10 +14,9 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.Autonomous.CharacterizeDrive;
 import frc.robot.Drivetrain.DrivetrainSubsystem;
-import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSpin;
+import frc.robot.Intake.IntakeSubsystem;
 
 public class OI {
     public XboxController xboxcontroller;
@@ -44,6 +43,7 @@ public class OI {
 
     public JoystickButton Button1;
     public JoystickButton Button2;
+    public JoystickButton Button3;
 
     public OI(){
         xboxcontroller = new XboxController(1);
@@ -69,19 +69,27 @@ public class OI {
         dpadUP_LEFT = new XBPovButton(xboxcontroller, UP_LEFT);
         dpadNONE = new XBPovButton(xboxcontroller, NONE);
 
-        dpadLEFT.whenPressed(new RunCommand( () -> DrivetrainSubsystem.shiftGear() ));
-        ButtonY.whileHeld(new IntakeSpin(-0.7));
-        ButtonY.whenReleased(new IntakeSpin(0));
+        //Driver overrides in case joystick buttons fail
+        ButtonRB.whileHeld(new IntakeSpin(-0.7));
+        ButtonRB.whenReleased(new IntakeSpin(0));
 
-        ButtonX.whileHeld(new IntakeSpin(0.7));
-        ButtonX.whenReleased(new IntakeSpin(0));
+        ButtonLB.whileHeld(new IntakeSpin(0.7));
+        ButtonLB.whenReleased(new IntakeSpin(0));
 
         Button1 = new JoystickButton(intakestick, 1);
         Button2 = new JoystickButton(intakestick, 2);
+        Button3 = new JoystickButton(intakestick, 3);
 
+        //Drivatrain and intake toggles
+        dpadLEFT.whenPressed(new RunCommand( () -> DrivetrainSubsystem.shiftGear() ));
+        Button3.whenPressed(new RunCommand( () -> IntakeSubsystem.switchIntakeClamp() ));
+        dpadRIGHT.whenPressed(new RunCommand( () -> IntakeSubsystem.switchIntakeClamp() ));
+
+        //Spin in
         Button1.whileHeld(new IntakeSpin(-0.7));
         Button1.whenReleased(new IntakeSpin(0));
 
+        //Spin out
         Button2.whileHeld(new IntakeSpin(0.7));
         Button2.whenReleased(new IntakeSpin(0));
         

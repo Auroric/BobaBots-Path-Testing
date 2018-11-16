@@ -28,7 +28,7 @@ public class DrivetrainSubsystem extends Subsystem {
     private static final int kAccel = 1000;
 
     public static Compressor compressor = new Compressor(1);
-    public static final DoubleSolenoid shifter = new DoubleSolenoid(1, 4, 5);
+    public static final DoubleSolenoid shifter = new DoubleSolenoid(1, 6, 7);
     public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
     public static final TalonSRX
             leftMotorA = new TalonSRX(3),
@@ -51,6 +51,9 @@ public class DrivetrainSubsystem extends Subsystem {
         leftMotorB.follow(leftMotorA);
         rightMotorB.follow(rightMotorA);
 
+        leftMotorB.configOpenloopRamp(0, kTimeout);
+        rightMotorB.configOpenloopRamp(0, kTimeout);
+
         //DrivetrainSubsystem negation settings
         Arrays.stream(leftMotors).forEach(motor -> motor.setInverted(true));
         Arrays.stream(rightMotors).forEach(motor -> motor.setInverted(false));
@@ -59,7 +62,7 @@ public class DrivetrainSubsystem extends Subsystem {
         for(TalonSRX motor : motors){
 
             //Current and voltage settings
-            motor.configPeakCurrentLimit(40, kTimeout);
+            motor.configPeakCurrentLimit(30, kTimeout);
             motor.configPeakCurrentDuration(500, kTimeout);
             motor.configContinuousCurrentLimit(35, kTimeout);
             motor.configVoltageCompSaturation(12, kTimeout);
@@ -85,7 +88,7 @@ public class DrivetrainSubsystem extends Subsystem {
         //Left drivetrain encoder
         leftMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
         leftMotorA.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-        leftMotorA.setSensorPhase(false);
+        leftMotorA.setSensorPhase(true);
         
         //Right drivetrain encoder
         rightMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
@@ -96,9 +99,7 @@ public class DrivetrainSubsystem extends Subsystem {
 
     public static void setOpenLoopRamp(double ramp){
         leftMotorA.configOpenloopRamp(ramp, 10);
-        leftMotorB.configOpenloopRamp(ramp, 10);
         rightMotorA.configOpenloopRamp(ramp, 10);
-        rightMotorB.configOpenloopRamp(ramp, 10);
     }
 
     //Sets drivetrain sides to speed parameters
@@ -153,6 +154,6 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public static void stopCompressor(){
-        //compressor.stop();
+        compressor.stop();
     }
 }

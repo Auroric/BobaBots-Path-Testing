@@ -18,7 +18,7 @@ public class IntakeSubsystem extends Subsystem {
     //private static final int kTimeout = 10;
 
     //private static DoubleSolenoid liftSolenoid = new DoubleSolenoid(0, 0, 0);
-    private static DoubleSolenoid clampSolenoid = new DoubleSolenoid(1, 6, 7);
+    private static DoubleSolenoid clampSolenoid = new DoubleSolenoid(1, 4, 5);
 
     private IntakeSubsystem(){
         /*intakeMotorA.configPeakCurrentLimit(40, kTimeout);
