@@ -1,6 +1,7 @@
 package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Intake.IntakeSpin;
 import frc.robot.Robot.Position;
 import frc.robot.Robot.Priority;
 
@@ -10,6 +11,7 @@ public class AutonomousCommand extends CommandGroup{
     private Priority priority;
 
     private char switchSide;
+    private char baselineSide;
 
     public AutonomousCommand(String gameData, Position startingPosition, Priority priority){
         this.gameData = gameData;
@@ -18,15 +20,23 @@ public class AutonomousCommand extends CommandGroup{
 
         this.switchSide = gameData.charAt(0);
 
+        if(switchSide == 'L'){
+            baselineSide = 'R';
+        } else if (switchSide == 'R'){
+            baselineSide = 'L';
+        }
+
         if(startingPosition == Position.CENTER){
 
             if(priority == Priority.BASELINE){
                 System.out.println("Running center to baseline!");
-                new PathFollower("Cto"+switchSide+"Baseline").start();
+                new PathFollower("Cto"+baselineSide+"Baseline").start();
 
             } else if (priority == Priority.DEFAULT){
                 System.out.println("Running center to " + switchSide + " switch!");
-                new PathFollower("Cto"+switchSide+"Switch").start();
+                addSequential(new RaiseElevatorTimed(0.4, 2));
+                addSequential(new PathFollower("Cto"+switchSide+"Switch"));
+                addSequential(new IntakeSpin(0.7));
 
             } else {
                 System.out.println("Auto failed :(");

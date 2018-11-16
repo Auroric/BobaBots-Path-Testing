@@ -2,13 +2,14 @@ package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Autonomous.AutonomousCommand;
+import frc.robot.Autonomous.PathFollower;
 import frc.robot.Drivetrain.DrivetrainSubsystem;
 import frc.robot.Elevator.ElevatorSubsystem;
 import frc.robot.Intake.IntakeSubsystem;
@@ -36,10 +37,10 @@ public class Robot extends TimedRobot {
     drivetrain = DrivetrainSubsystem.getInstance();
     oi = new OI();
     
-    camera = CameraServer.getInstance().startAutomaticCapture(0);
+    /*camera = CameraServer.getInstance().startAutomaticCapture(0);
 
     camera.setResolution(320, 240);
-    camera.setFPS(15);
+    camera.setFPS(15);*/
 
     positionChooser = new SendableChooser<Position>();
     positionChooser.addDefault("Center", Position.CENTER);
@@ -82,9 +83,11 @@ public class Robot extends TimedRobot {
     Position position = positionChooser.getSelected();
     Priority priority = priorityChooser.getSelected();
 
-    autonomousCommand = new AutonomousCommand(gameData, position, priority);
+    //DrivetrainSubsystem.shiftGear(Value.kReverse);
 
-    //new PathFollower("Straight15ft").start();
+    //autonomousCommand = new AutonomousCommand(gameData, position, priority);
+
+    new PathFollower("Straight15ft").start();
   }
 
   @Override
@@ -104,6 +107,8 @@ public class Robot extends TimedRobot {
     DrivetrainSubsystem.setBrakeMode();
     DrivetrainSubsystem.leftMotorB.setSelectedSensorPosition(0, 0, 10);
 
+    //DrivetrainSubsystem.shiftGear(Value.kReverse);
+
   }
 
   @Override
@@ -119,16 +124,12 @@ public class Robot extends TimedRobot {
   public enum Position{
     LEFT('L'), CENTER('C'), RIGHT('R');
     
-    //field = variable or object covers entire class; declaration; private = only accessible 
-    //within class; final = specifies values that can't be changed 
     private final char pos;
     
-    //constructor for position
     private Position(char pos){
       this.pos = pos;
     }
     
-    //method that returns row bow's character of position to be compared to other things  
     public char getPos(){
       return pos;
     }
