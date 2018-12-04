@@ -74,8 +74,8 @@ public class OI {
         ButtonRB.whileHeld(new IntakeSpin(-0.7));
         ButtonRB.whenReleased(new IntakeSpin(0));
 
-        ButtonLB.whileHeld(new IntakeSpin(0.7));
-        ButtonLB.whenReleased(new IntakeSpin(0));
+        //ButtonLB.whileHeld(new IntakeSpin(0.7));
+        //ButtonLB.whenReleased(new IntakeSpin(0));
 
         Button1 = new JoystickButton(intakestick, 1);
         Button2 = new JoystickButton(intakestick, 2);
