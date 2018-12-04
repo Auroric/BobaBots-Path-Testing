@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.Drivetrain.Drive;
 import frc.robot.Drivetrain.DrivetrainSubsystem;
 import frc.robot.Intake.IntakeSpin;
 import frc.robot.Intake.IntakeSubsystem;
@@ -99,16 +100,47 @@ public class OI {
         //Controllers y-axes are natively up-negative, down-positive
         return -xboxcontroller.getY(Hand.kLeft);
     }
+
     public double turnValue() {
         return xboxcontroller.getX(Hand.kRight);
-        
     }
+
     public static double elevateValue(){ 
         return elevatorstick.getY();
     }
 
     public double intakeSpeed(){
         return intakestick.getY();
- 
+
+    }
+
+    /*
+     * Methods for controlling quickturn 
+     */
+    public double getLeftTrigger(){
+        double deadband = 0.05;
+        return Drive.deadbandX(xboxcontroller.getTriggerAxis(Hand.kLeft), deadband);
+    }
+    public double getRightTrigger(){
+        double deadband = 0.05;
+        return Drive.deadbandX(xboxcontroller.getTriggerAxis(Hand.kRight), deadband);
+    }
+    public boolean isQuickturn(){
+
+        boolean leftActive = getLeftTrigger() != 0; 
+        boolean rightActive = getRightTrigger() != 0; ; 
+
+        return leftActive || rightActive;
+
+    }
+
+    /*
+     * Methods for controlling quickturn (triggered)
+     */
+    public double getThrottleX(){
+        return xboxcontroller.getX(Hand.kLeft);
+    }
+    public boolean isQuickturnTwo(){
+        return xboxcontroller.getBumper(Hand.kLeft);
     }
 }
