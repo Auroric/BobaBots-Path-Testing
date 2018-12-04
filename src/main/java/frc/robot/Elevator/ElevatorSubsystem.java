@@ -30,24 +30,17 @@ public class ElevatorSubsystem extends Subsystem {
 
     private ElevatorSubsystem() {
         elevatorMotorB.follow(elevatorMotorA);
-<<<<<<< HEAD
-=======
+
         elevatorMotorA.setInverted(true);
         elevatorMotorB.setInverted(true);
->>>>>>> fixingCommit
 
         //Current and voltage settings
         elevatorMotorA.configPeakCurrentLimit(40, kTimeout);
         elevatorMotorA.configPeakCurrentDuration(500, kTimeout);
-        elevatorMotorA.enableCurrentLimit(true);
-
         elevatorMotorA.configContinuousCurrentLimit(20, kTimeout);
         elevatorMotorA.configVoltageCompSaturation(12, kTimeout);
         elevatorMotorA.enableVoltageCompensation(true);
         elevatorMotorA.enableCurrentLimit(true);
-
-        //elevatorMotorB.configVoltageCompSaturation(12, kTimeout);
-        //elevatorMotorB.enableVoltageCompensation(true);
 
         //PID Gains and settings
         elevatorMotorA.selectProfileSlot(0, kPIDIndex);
@@ -65,7 +58,7 @@ public class ElevatorSubsystem extends Subsystem {
         elevatorMotorA.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
         elevatorMotorA.configMotionAcceleration(kAccel, kTimeout);
 
-     //   elevatorMotorB.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
+       //elevatorMotorB.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
        // elevatorMotorB.configMotionAcceleration(kAccel, kTimeout);
 
         elevatorMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
@@ -77,9 +70,9 @@ public class ElevatorSubsystem extends Subsystem {
     public static double elevAVoltage(){
         return elevatorMotorA.getMotorOutputVoltage();
     }
-  /*  public static double elevBVoltage(){
+    public static double elevBVoltage(){
         return elevatorMotorB.getMotorOutputVoltage();
-    }*/
+    }
 
     public static void elevate(double speed){
         elevatorMotorA.set(ControlMode.PercentOutput, speed);
