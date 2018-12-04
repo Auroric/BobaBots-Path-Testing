@@ -6,7 +6,7 @@ import frc.robot.Robot;
 
 //import static frc.robot.Drivetrain.DrivetrainSubsystem.motors;
 
-public class CurvatureDrive extends Command {
+public class CurvatureDriveTriggered extends Command {
     private static double right, left;
     private double driveRamp = 0.5, quickturnRamp = 0;
 
@@ -28,7 +28,7 @@ public class CurvatureDrive extends Command {
     public static final double kLinterceptLow = 0.968;
     public static final double kRinterceptLow = 1.058;
 
-    public CurvatureDrive(){
+    public CurvatureDriveTriggered(){
         requires(DrivetrainSubsystem.getInstance());
     }
 
@@ -53,7 +53,7 @@ public class CurvatureDrive extends Command {
         if(!quickturn){
             DrivetrainSubsystem.setOpenLoopRamp(driveRamp);
 
-            left = throttle+throttle*turn);
+            left = throttle+throttle*turn;
             right = throttle-throttle*turn;
 
             left = exponentiate(left, 2);

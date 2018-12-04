@@ -55,7 +55,7 @@ public class CurvatureDrive extends Command {
         if(!quickturn){
             DrivetrainSubsystem.setOpenLoopRamp(driveRamp);
 
-            left = throttle+throttle*turn);
+            left = throttle+throttle*turn;
             right = throttle-throttle*turn;
 
             left = exponentiate(left, 2);
