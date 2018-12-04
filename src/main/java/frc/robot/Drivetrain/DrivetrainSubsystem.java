@@ -46,7 +46,6 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     private DrivetrainSubsystem() {
-        //compressor.stop();
         //Setting leader and follower talons
         leftMotorB.follow(leftMotorA);
         rightMotorB.follow(rightMotorA);
@@ -79,11 +78,7 @@ public class DrivetrainSubsystem extends Subsystem {
             motor.configMotionCruiseVelocity(kCruiseVelo, kTimeout);
             motor.configMotionAcceleration(kAccel, kTimeout);
 
-            //motor.configOpenloopRamp(0.5, 10);
-
         }
-
-        //setOpenLoopRamp(0.25);
         
         //Left drivetrain encoder
         leftMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
