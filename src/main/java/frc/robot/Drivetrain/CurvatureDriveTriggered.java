@@ -58,10 +58,12 @@ public class CurvatureDriveTriggered extends Command {
 
             left = exponentiate(left, 2);
             right = exponentiate(right, 2);
+
         } else {
             DrivetrainSubsystem.setOpenLoopRamp(quickturnRamp);
 
             double quickturnSpeed = Robot.oi.getThrottleX();
+            
             left = quickturnSpeed;
             right = -quickturnSpeed;
             
@@ -77,10 +79,10 @@ public class CurvatureDriveTriggered extends Command {
             left = deadbandY(left, kLinterceptLow/12.0);
             right = deadbandY(right, kRinterceptLow/12.0);
         }
-        
+        */
         //Drives the motors at calculated speeds
         DrivetrainSubsystem.drive(left, right);
-        */
+        
     }
 
     /**

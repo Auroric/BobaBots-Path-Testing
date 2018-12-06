@@ -42,7 +42,7 @@ public class DrivetrainSubsystem extends Subsystem {
     private static final TalonSRX[] rightMotors = {rightMotorA, rightMotorB};
 
     public void initDefaultCommand(){
-        setDefaultCommand(new Drive());
+        setDefaultCommand(new CurvatureDriveTriggered());
     }
 
     private DrivetrainSubsystem() {

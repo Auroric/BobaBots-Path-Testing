@@ -79,8 +79,9 @@ public class CurvatureDrive extends Command {
         }
         
         //Drives the motors at calculated speeds
-        DrivetrainSubsystem.drive(left, right);
         */
+        DrivetrainSubsystem.drive(left, right);
+        
     }
 
     /**

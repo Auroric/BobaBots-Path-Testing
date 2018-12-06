@@ -74,6 +74,9 @@ public class OI {
         ButtonRB.whileHeld(new IntakeSpin(-0.7));
         ButtonRB.whenReleased(new IntakeSpin(0));
 
+        ButtonA.whileHeld(new IntakeSpin(0.7));
+        ButtonA.whenReleased(new IntakeSpin(0));
+
         //ButtonLB.whileHeld(new IntakeSpin(0.7));
         //ButtonLB.whenReleased(new IntakeSpin(0));
 
@@ -138,7 +141,7 @@ public class OI {
      * Methods for controlling quickturn (triggered)
      */
     public double getThrottleX(){
-        return xboxcontroller.getX(Hand.kLeft);
+        return xboxcontroller.getX(Hand.kRight);
     }
     public boolean isQuickturnTwo(){
         return xboxcontroller.getBumper(Hand.kLeft);
