@@ -17,8 +17,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class DrivetrainSubsystem extends Subsystem {
 
     private static DrivetrainSubsystem instance = null;
-    public static DrivetrainSubsystem getInstance(){
-        if (instance == null) instance = new DrivetrainSubsystem();
+
+    public static DrivetrainSubsystem getInstance() {
+        if (instance == null)
+            instance = new DrivetrainSubsystem();
         return instance;
     }
 
@@ -30,37 +32,35 @@ public class DrivetrainSubsystem extends Subsystem {
     public static Compressor compressor = new Compressor(1);
     public static final DoubleSolenoid shifter = new DoubleSolenoid(1, 6, 7);
     public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
-    public static final TalonSRX
-            leftMotorA = new TalonSRX(3),
-            leftMotorB = new TalonSRX(4),
-            rightMotorA = new TalonSRX(2),
-            rightMotorB = new TalonSRX(1);
+    public static final TalonSRX leftMotorA = new TalonSRX(3), leftMotorB = new TalonSRX(4),
+            rightMotorA = new TalonSRX(2), rightMotorB = new TalonSRX(1);
 
-    //Creates arrays for various motors so I can call the same methods for each at the same time
-    public static final TalonSRX[] motors = {leftMotorA, leftMotorB, rightMotorB, rightMotorA};
-    private static final TalonSRX[] leftMotors = {leftMotorA, leftMotorB};
-    private static final TalonSRX[] rightMotors = {rightMotorA, rightMotorB};
+    // Creates arrays for various motors so I can call the same methods for each at
+    // the same time
+    public static final TalonSRX[] motors = { leftMotorA, leftMotorB, rightMotorB, rightMotorA };
+    private static final TalonSRX[] leftMotors = { leftMotorA, leftMotorB };
+    private static final TalonSRX[] rightMotors = { rightMotorA, rightMotorB };
 
-    public void initDefaultCommand(){
+    public void initDefaultCommand() {
         setDefaultCommand(new CurvatureDriveTriggered());
     }
 
     private DrivetrainSubsystem() {
-        //Setting leader and follower talons
+        // Setting leader and follower talons
         leftMotorB.follow(leftMotorA);
         rightMotorB.follow(rightMotorA);
 
         leftMotorB.configOpenloopRamp(0, kTimeout);
         rightMotorB.configOpenloopRamp(0, kTimeout);
 
-        //DrivetrainSubsystem negation settings
+        // DrivetrainSubsystem negation settings
         Arrays.stream(leftMotors).forEach(motor -> motor.setInverted(true));
         Arrays.stream(rightMotors).forEach(motor -> motor.setInverted(false));
 
-        //Setting common settings for Talons
-        for(TalonSRX motor : motors){
+        // Setting common settings for Talons
+        for (TalonSRX motor : motors) {
 
-            //Current and voltage settings
+            // Current and voltage settings
             motor.configPeakCurrentLimit(30, kTimeout);
             motor.configPeakCurrentDuration(500, kTimeout);
             motor.configContinuousCurrentLimit(35, kTimeout);
@@ -68,7 +68,7 @@ public class DrivetrainSubsystem extends Subsystem {
             motor.enableVoltageCompensation(true);
             motor.enableCurrentLimit(true);
 
-            //PID Gains and settings
+            // PID Gains and settings
             motor.selectProfileSlot(0, kPIDIndex);
             motor.config_kF(0, 0.3808637379, kTimeout);
             motor.config_kP(0, 0.1, kTimeout);
@@ -79,25 +79,25 @@ public class DrivetrainSubsystem extends Subsystem {
             motor.configMotionAcceleration(kAccel, kTimeout);
 
         }
-        
-        //Left drivetrain encoder
+
+        // Left drivetrain encoder
         leftMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
         leftMotorA.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
         leftMotorA.setSensorPhase(true);
-        
-        //Right drivetrain encoder
+
+        // Right drivetrain encoder
         rightMotorA.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1, 10);
         rightMotorA.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
         rightMotorA.setSensorPhase(false);
 
     }
 
-    public static void setOpenLoopRamp(double ramp){
+    public static void setOpenLoopRamp(double ramp) {
         leftMotorA.configOpenloopRamp(ramp, 10);
         rightMotorA.configOpenloopRamp(ramp, 10);
     }
 
-    //Sets drivetrain sides to speed parameters
+    // Sets drivetrain sides to speed parameters
     public static void drive(double leftspeed, double rightspeed) {
 
         leftMotorA.set(ControlMode.PercentOutput, leftspeed);
@@ -105,50 +105,50 @@ public class DrivetrainSubsystem extends Subsystem {
 
     }
 
-    //Sets drivetrain sides to an encoder target
-    public static void driveDistance(double targetLeft, double targetRight){
-        
+    // Sets drivetrain sides to an encoder target
+    public static void driveDistance(double targetLeft, double targetRight) {
+
         leftMotorA.set(ControlMode.MotionMagic, targetLeft);
         rightMotorA.set(ControlMode.MotionMagic, targetRight);
 
     }
 
-    public static void shiftGear(){
-        switch(shifter.get()){
-            case kForward:
-                shifter.set(DoubleSolenoid.Value.kReverse);
-                System.out.println("Shifting to low gear!");
-                break;
-            default:
-                shifter.set(DoubleSolenoid.Value.kForward);
-                System.out.println("Shifting to high gear!");
-                break;
+    public static void shiftGear() {
+        switch (shifter.get()) {
+        case kForward:
+            shifter.set(DoubleSolenoid.Value.kReverse);
+            System.out.println("Shifting to low gear!");
+            break;
+        default:
+            shifter.set(DoubleSolenoid.Value.kForward);
+            System.out.println("Shifting to high gear!");
+            break;
         }
     }
 
-    public static void shiftGear(DoubleSolenoid.Value shiftTo){
+    public static void shiftGear(DoubleSolenoid.Value shiftTo) {
         shifter.set(shiftTo);
         System.out.println("Shifting gears!");
     }
 
-    public static void resetEncoders(){
-        leftMotorA.setSelectedSensorPosition(0,0,10);
-        rightMotorA.setSelectedSensorPosition(0,0,10);
+    public static void resetEncoders() {
+        leftMotorA.setSelectedSensorPosition(0, 0, 10);
+        rightMotorA.setSelectedSensorPosition(0, 0, 10);
     }
 
-    public static void resetGyro(){
+    public static void resetGyro() {
         gyro.reset();
     }
 
-    public static void setBrakeMode(){
+    public static void setBrakeMode() {
         Arrays.stream(motors).forEach(motor -> motor.setNeutralMode(NeutralMode.Brake));
     }
 
-    public static void setCoastMode(){
+    public static void setCoastMode() {
         Arrays.stream(motors).forEach(motor -> motor.setNeutralMode(NeutralMode.Coast));
     }
 
-    public static void stopCompressor(){
+    public static void stopCompressor() {
         compressor.stop();
     }
 }
