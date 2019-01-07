@@ -96,6 +96,8 @@ public class OI {
         //Spin out
         Button2.whileHeld(new IntakeSpin(0.7));
         Button2.whenReleased(new IntakeSpin(0));
+
+        dpadUP.whenPressed(new RunCommand( () -> DrivetrainSubsystem.changeCamVal() ));
         
     }
 

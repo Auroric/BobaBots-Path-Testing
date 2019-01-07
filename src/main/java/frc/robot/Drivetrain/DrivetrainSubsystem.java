@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 public class DrivetrainSubsystem extends Subsystem {
 
     private static DrivetrainSubsystem instance = null;
@@ -40,6 +42,8 @@ public class DrivetrainSubsystem extends Subsystem {
     public static final TalonSRX[] motors = { leftMotorA, leftMotorB, rightMotorB, rightMotorA };
     private static final TalonSRX[] leftMotors = { leftMotorA, leftMotorB };
     private static final TalonSRX[] rightMotors = { rightMotorA, rightMotorB };
+
+    private static int ledval = 0;
 
     public void initDefaultCommand() {
         setDefaultCommand(new CurvatureDriveTriggered());
@@ -150,5 +154,21 @@ public class DrivetrainSubsystem extends Subsystem {
 
     public static void stopCompressor() {
         compressor.stop();
+    }
+
+    public static void changeCamVal(){
+        ledval=(ledval+1)%3;
+        NetworkTableInstance.getDefault()
+                    .getTable("limelight")
+                    .getEntry("ledMode")
+                    .setNumber(ledval);
+    }
+
+    public static void changeCamVal(int val){
+        val = val%3;
+        NetworkTableInstance.getDefault()
+                    .getTable("limelight")
+                    .getEntry("ledMode")
+                    .setNumber(val);
     }
 }

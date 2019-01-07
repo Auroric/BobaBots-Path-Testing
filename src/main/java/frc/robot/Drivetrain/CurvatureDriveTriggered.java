@@ -2,6 +2,7 @@ package frc.robot.Drivetrain;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Robot;
 
 //import static frc.robot.Drivetrain.DrivetrainSubsystem.motors;
@@ -133,5 +134,6 @@ public class CurvatureDriveTriggered extends Command {
             return input*(1.0-deadband)+Math.signum(input)*deadband;
         }
     }
+
 
 }
